@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>115年度中央氣象署：預算績效與重大計畫導航系統 (預算版本A - 整合人事/主計版)</title>
+    <title>115年度中央氣象署：預算績效與重大計畫導航系統 (完整數據整合版)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -15,7 +13,6 @@
 
     <style>
         body { font-family: 'Noto Sans TC', sans-serif; scroll-behavior: smooth; }
-        .chart-container { position: relative; width: 100%; max-width: 900px; margin: 0 auto; height: 350px; }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -31,6 +28,10 @@
         
         .bg-marine { background: linear-gradient(135deg, #075985 0%, #0c4a6e 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th { background-color: #f8fafc; color: #475569; font-weight: 700; text-align: left; padding: 12px; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 text-sm">
@@ -41,7 +42,7 @@
             <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-cloud-sun text-sky-400 text-2xl"></i>
-                    <span class="font-bold text-lg text-white">115年度 氣象預算管理決策系統 (版本A+)</span>
+                    <span class="font-bold text-lg text-white">115年度 氣象預算管理系統 (整合人事/主計數據)</span>
                 </div>
                 <div class="hidden lg:flex space-x-6 text-sm font-bold">
                     <a href="#summary" class="hover:text-sky-400 transition-colors">數據總覽</a>
@@ -54,28 +55,28 @@
     </nav>
 
     <!-- Header KPI Summary -->
-    <header id="summary" class="py-12 bg-white border-b shadow-sm text-center md:text-left">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header id="summary" class="py-12 bg-white border-b shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:text-left">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="p-8 bg-slate-950 rounded-[2.5rem] text-white shadow-xl border-b-4 border-sky-500">
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">115 歲出概算總額</p>
                     <p class="text-3xl font-black text-sky-400">3,004,946</p>
-                    <p class="text-[10px] text-slate-500">單位：千元 (主計室校對版)</p>
+                    <p class="text-[10px] text-slate-500">單位：千元 (主計室分配數)</p>
                 </div>
                 <div class="p-8 bg-slate-100 rounded-[2.5rem] border border-slate-200 shadow-sm">
                     <p class="text-[10px] font-bold text-slate-500 uppercase mb-1">114 歲出法定預算</p>
                     <p class="text-3xl font-black text-slate-700">2,516,125</p>
-                    <p class="text-[10px] text-slate-500">單位：千元</p>
+                    <p class="text-[10px] text-slate-500">較去年增幅 19.43%</p>
                 </div>
                 <div class="p-8 bg-sky-50 rounded-[2.5rem] border border-sky-100 shadow-sm">
                     <p class="text-[10px] font-bold text-sky-600 uppercase mb-1">年度經費總增額</p>
                     <p class="text-3xl font-black text-sky-600">+488,821</p>
-                    <p class="text-[10px] text-sky-500 font-bold italic">年度預算增幅：19.43%</p>
+                    <p class="text-[10px] text-sky-500 font-bold italic">含科技計畫與人事費增支</p>
                 </div>
                 <div class="p-8 bg-emerald-50 rounded-[2.5rem] border border-emerald-100 shadow-sm flex flex-col justify-center">
-                    <p class="text-[10px] font-bold text-emerald-600 uppercase mb-1">預算成長之首</p>
-                    <p class="text-xl font-bold text-emerald-700 leading-tight">數值資訊組 (+1.9億)</p>
-                    <p class="text-[10px] text-emerald-500 mt-1 italic">其次為遙測組與科發組</p>
+                    <p class="text-[10px] font-bold text-emerald-600 uppercase mb-1">員額與人事能量</p>
+                    <p class="text-xl font-bold text-emerald-700 leading-tight">649 員額編制</p>
+                    <p class="text-[10px] text-emerald-500 mt-1 italic">人事費預算佔比約 27.6%</p>
                 </div>
             </div>
         </div>
@@ -86,26 +87,17 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-12 border-l-8 border-indigo-600 pl-6">
                 <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-3">
-                    <i class="fa-solid fa-microchip text-sky-600"></i> 主要計畫績效導航
+                    <i class="fa-solid fa-microchip text-sky-600"></i> 主要科技計畫看板
                 </h2>
-                <p class="mt-4 text-slate-600 font-medium max-w-2xl">點擊左側計畫列表查看 115 年度 OKR、KPI 及具體工項細節。數據已整合主計室最新分配數。</p>
+                <p class="mt-4 text-slate-600 font-medium max-w-2xl">整合 115 年度四大核心科技計畫，對接組室預算與重點工項。</p>
             </div>
 
-            <div class="bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden flex flex-col lg:flex-row min-h-[700px]">
-                <!-- Project Side Selector -->
+            <div class="bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden flex flex-col lg:flex-row min-h-[650px]">
                 <div class="lg:w-1/3 bg-slate-900 text-white p-6 flex flex-col">
-                    <div class="mb-8 p-2 font-bold text-slate-400 text-xs uppercase tracking-widest border-b border-slate-800 pb-4 text-center">
-                        核心計畫索引
-                    </div>
-                    <div class="space-y-3 flex-1 overflow-y-auto no-scrollbar" id="major-project-list">
-                        <!-- JS Populated -->
-                    </div>
+                    <div class="mb-8 p-2 font-bold text-slate-400 text-xs uppercase tracking-widest border-b border-slate-800 pb-4 text-center">科技計畫索引</div>
+                    <div class="space-y-3 flex-1 overflow-y-auto no-scrollbar" id="major-project-list"></div>
                 </div>
-
-                <!-- Project Detail Viewer -->
-                <div class="lg:w-2/3 p-10 relative overflow-y-auto custom-scrollbar bg-white" id="major-project-display">
-                    <!-- JS Populated Default -->
-                </div>
+                <div class="lg:w-2/3 p-10 relative overflow-y-auto custom-scrollbar bg-white" id="major-project-display"></div>
             </div>
         </div>
     </section>
@@ -115,19 +107,14 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
             <div class="mb-12 flex flex-col md:flex-row justify-between items-end gap-4">
                 <div>
-                    <h2 class="text-3xl font-bold text-slate-900">組室 OKR 與 深度績效庫 (含行政單位)</h2>
-                    <p class="mt-4 text-slate-500 font-medium max-w-3xl">整合 11 份組室簡報，包含人事、秘書、南區中心及九大組室之全部核心指標與預算增減額。</p>
+                    <h2 class="text-3xl font-bold text-slate-900">組室預算與全績效庫</h2>
+                    <p class="mt-4 text-slate-500 font-medium max-w-3xl">收錄主計室簡表全部 11 個組室數據，並深度解析人事室之薪資、退休、出國計畫細節。</p>
                 </div>
-                <div class="text-xs text-slate-400 italic font-bold text-right">依主計室 115 預算組室別簡表</div>
+                <div class="text-xs text-slate-400 italic font-bold text-right">依據 12/23 最新上傳檔案整理</div>
             </div>
 
-            <div class="flex gap-2 border-b border-slate-200 mb-8 overflow-x-auto no-scrollbar" id="unit-tabs-container">
-                <!-- JS Populated Tabs -->
-            </div>
-
-            <div id="unit-content-display" class="fade-in">
-                <!-- JS Populated Content -->
-            </div>
+            <div class="flex gap-2 border-b border-slate-200 mb-8 overflow-x-auto no-scrollbar" id="unit-tabs-container"></div>
+            <div id="unit-content-display" class="fade-in"></div>
         </div>
     </section>
 
@@ -135,31 +122,27 @@
     <section id="qa-vault" class="py-16 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-left mb-16">
-                <span class="bg-rose-100 text-rose-600 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest">立法院 115 年度預擬答題庫 (人事與業務整合版)</span>
-                <h2 class="text-3xl font-bold text-slate-900 mt-4">預算中心質詢與官方攻防全記錄</h2>
-                <p class="mt-4 text-slate-500 max-w-2xl italic text-sm">收錄重要政策計畫、人事費調增、出國與大陸考察必要性之正式答詢邏輯。</p>
+                <span class="bg-rose-100 text-rose-600 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest">立法院 115 年度預擬答題庫 (完整版)</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-4">預算質詢與官方攻防重點</h2>
+                <p class="mt-4 text-slate-500 max-w-2xl italic text-sm">針對人事費、出國研究、大陸考察旅費、AI預報計畫等爭議點提供標準答案。</p>
             </div>
 
-            <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-2xl overflow-hidden flex flex-col md:flex-row h-[800px]">
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-2xl overflow-hidden flex flex-col md:flex-row h-[750px]">
                 <div class="w-full md:w-1/3 border-r bg-slate-50 flex flex-col">
                     <div class="p-4 border-b">
-                        <input type="text" id="qa-search" onkeyup="filterQA()" placeholder="搜尋議題(如：人事、出國、雷達)..." class="w-full p-4 rounded-xl border text-sm shadow-inner focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                        <input type="text" id="qa-search" onkeyup="filterQA()" placeholder="搜尋議題(如：退休、出國、雷達)..." class="w-full p-4 rounded-xl border text-sm shadow-inner focus:ring-2 focus:ring-sky-500 focus:outline-none">
                     </div>
-                    <div class="flex-1 overflow-y-auto custom-scrollbar" id="qa-list-container">
-                        <!-- JS Populated Topics -->
-                    </div>
+                    <div class="flex-1 overflow-y-auto custom-scrollbar" id="qa-list-container"></div>
                 </div>
-                <div class="w-full md:w-2/3 p-10 overflow-y-auto custom-scrollbar bg-white" id="qa-detail-display">
-                    <!-- JS Populated QA Detail View -->
-                </div>
+                <div class="w-full md:w-2/3 p-10 overflow-y-auto custom-scrollbar bg-white" id="qa-detail-display"></div>
             </div>
         </div>
     </section>
 
     <footer class="bg-slate-950 text-slate-600 py-16 text-center">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p class="text-sm font-bold">交通部中央氣象署 115 年度預算績效決策管理系統 (整合 1223 版本)</p>
-            <p class="text-xs mt-3 opacity-60 italic">資料來源：115年重要工作.pdf / 人事室工項規劃PPTX / 主計室預算組室別簡表</p>
+            <p class="text-sm font-bold">交通部中央氣象署 115 年度預算績效決策管理系統 (v1.2)</p>
+            <p class="text-xs mt-3 opacity-60">數據來源：115年預算組室別簡表、人事室經費與工項規劃報告</p>
         </div>
     </footer>
 
@@ -167,96 +150,117 @@
     <script>
         // --- DATA 1: STRATEGIC PROJECTS ---
         const strategicProjects = [
-            { id: 'HPC', name: '數值天氣測報高速運算電腦建設 (六期)', budget: '345,903', owner: '數值資訊組', icon: 'fa-server', works: ['第6代高速運算電腦可用率達 99.9%。', '新竹氣象科技園區完成規劃設計。', '導入全球開源 AI 模型產製系集預報。'], okr: '建置 GPU 高效算力核心，導入 AI 模式強化颱風展期預報。', kpi: '99.9% 可用率', benefit: '提供國家級算力，加速 AI 模式作業化應用。', source: '115年重要工作.pdf' },
-            { id: 'R', name: '精進氣象雷達與災防預警 (R 計畫)', budget: '339,650', owner: '海氣遙測組', icon: 'fa-satellite-dish', works: ['建置金門及馬祖雷達設備採購款。', '執行馬祖站房監造與金門站房細部規劃。', '維持全台雙偏極化雷達妥善率。'], okr: '填補西部海域監測盲區，建構完整氣象監控網。', kpi: '95% 妥善率', benefit: '提升金馬地區劇烈天氣與濃霧早期預警時效。', source: '主計室分配表' },
-            { id: 'O', name: '智慧海象治理與氣候韌性提升', budget: '388,590', owner: '海象氣候組', icon: 'fa-water', works: ['建置智慧海象浮標觀測網。', '建立臺灣乾旱整合資訊平臺。', '開發 MPAS 海象預報模式核心系統。'], okr: '整合跨組室乾旱監測平臺，優化藍色公路與漁業氣象預報。', kpi: '95% 妥善率', benefit: '協助政府抗旱策略規劃，保障全台海域活動安全。', source: '115年重要工作.pdf' },
-            { id: 'P7', name: '氣象風險數位治理與跨域應用創新', budget: '325,000', owner: '科技發展組', icon: 'fa-vial-circle-check', works: ['導入前瞻數據驅動 AI 預報模式開發。', '解決 14 天內之無縫隙預報斷層。', '建構產業氣候風險管理應用平臺。'], okr: '研發動力與數據雙軌並行之預報模型，轉化氣象數據為產業產出價值。', kpi: '100% 執行率', benefit: '解決產業風險資訊缺口，強化國家監測數位韌性。', source: '科發組 PPTX' }
+            { id: 'HPC', name: '數值天氣測報高速運算電腦建設 (六期)', budget: '345,903', owner: '數值資訊組', icon: 'fa-server', works: ['建置 GPU 高效算力核心', '導入 AI 模式強化颱風展期預報', '新竹氣象科技園區完成規劃設計'], kpi: '99.9% 可用率', benefit: '提供國家級算力，加速 AI 模式作業化應用。' },
+            { id: 'R', name: '精進氣象雷達與災防預警 (R 計畫)', budget: '339,650', owner: '海氣遙測組', icon: 'fa-satellite-dish', works: ['建置金門、馬祖雷達設備採購款', '執行馬祖站房監造與金門站房細部規劃', '維持全台雙偏極化雷達妥善率'], kpi: '95% 妥善率', benefit: '填補西部海域監測盲區，提升金馬地區災防時效。' },
+            { id: 'O', name: '智慧海象治理與氣候韌性提升', budget: '388,590', owner: '海象氣候組', icon: 'fa-water', works: ['建置智慧海象浮標觀測網', '建立臺灣乾旱整合資訊平臺', '開發 MPAS 海象預報模式核心系統'], kpi: '95% 妥善率', benefit: '協助政府抗旱策略規劃，保障全台海域活動安全。' },
+            { id: 'P7', name: '氣象風險數位治理與跨域應用創新', budget: '325,000', owner: '科技發展組', icon: 'fa-vial-circle-check', works: ['導入數據驅動 AI 預報模式開發', '解決 14 天內之無縫隙預報斷層', '建構產業氣候風險管理應用平臺'], kpi: '100% 執行率', benefit: '解決產業風險資訊缺口，強化國家監測數位韌性。' }
         ];
 
-        // --- DATA 2: ALL UNITS (Refined with Personnel Office & Budget data) ---
+        // --- DATA 2: ALL UNITS (EXHAUSTIVE FROM PDF & PPT) ---
         const units = [
             { 
                 id: '人事室', icon: 'fa-users-gear', 
                 budget_info: '829,078k (+17,815k)',
-                full_okr: '1. 考量考績晉級與軍公教待遇調增，覈實編列人事費。<br>2. 強化內部凝聚力、促進跨部門交流並建立互動共識。<br>3. 提升員工專業知能與管理職能，營造友善職場環境。', 
-                kpis: [{t:'預估執行率', v:'95.2%'}, {t:'員額總計', v:'649人'}, {t:'出國計畫', v:'3項'}], 
-                benefit: '穩固本署人才能量，確保預報與監測業務由專業人力持續運算。', 
-                source: '人事室工項規劃簡報' 
+                full_okr: '1. 考量考績晉級及 114 年軍公教待遇調增，覈實編列人事費。<br>2. 提升員工專業知能，強化管理職能與友善職場。<br>3. 依據行政院日支數額表修正，調增派員出國旅費。', 
+                kpis: [{t:'員額編制', v:'649人'}, {t:'出國計畫', v:'8項'}, {t:'退休給付', v:'5,500k'}], 
+                details: [
+                    {k: '員額組成', v: '職員 586, 駐警 4, 工友 21, 技工 1, 駕駛 11, 聘用 21, 約僱 5'},
+                    {k: '114執行率', v: '預估 95.2% (受退休潮 36 人影響)'},
+                    {k: '出國費', v: '1,531k (+157k)'},
+                    {k: '大陸旅費', v: '75k (+60k)'}
+                ],
+                benefit: '穩固本署人才能量，確保預報監測與防災業務具備充足專業人力。', 
+                source: '人事室 PPT / 主計室' 
             },
             { 
-                id: '數值組', icon: 'fa-database', 
+                id: '數值資訊組', icon: 'fa-database', 
                 budget_info: '716,108k (+190,090k)',
-                full_okr: '1. 維持高速電腦可用性達 99.95% 以上。<br>2. 新竹科技園區完成細部設計。<br>3. 建置 PDS 即時資料供應平臺，效能提升 20%。', 
-                kpis: [{t:'HPC可用性', v:'99.95%'}, {t:'PDS效能', v:'+20%'}], 
-                benefit: '確保國家級氣象算力資源穩定，提供高效能資料服務。', 
-                source: '數值資訊組 / 主計室' 
+                full_okr: '執行高速運算電腦六期計畫，並推動新竹氣象科技園區建設。', 
+                kpis: [{t:'HPC可用性', v:'99.9%'}, {t:'園區進度', v:'規劃完成'}], 
+                benefit: '提升數值預報效能與氣象資料運算速度。', 
+                source: '主計室 115 簡表' 
+            },
+            { 
+                id: '海象氣候組', icon: 'fa-droplet', 
+                budget_info: '342,635k (+58,802k)',
+                full_okr: '深化海象預報技術，整合乾旱預警資訊與海纜觀測資料。', 
+                kpis: [{t:'平臺建設', v:'1套'}, {t:'預報精度', v:'優化'}], 
+                benefit: '強化海象安全監測與氣候調適韌性。', 
+                source: '主計室 115 簡表' 
+            },
+            { 
+                id: '海氣遙測組', icon: 'fa-tower-observation', 
+                budget_info: '298,806k (+108,404k)',
+                full_okr: '推動精進雷達計畫(R計畫)，加速建置金馬災防預警設備。', 
+                kpis: [{t:'設備採購', v:'100%'}, {t:'雷達妥善率', v:'95%'}], 
+                benefit: '補足西部觀測盲區，強化離島預警能力。', 
+                source: '主計室 115 簡表' 
+            },
+            { 
+                id: '大氣觀測組', icon: 'fa-wind', 
+                budget_info: '256,014k (+66,085k)',
+                full_okr: '維持全國觀測網站站點運行，推動自動化測站更新。', 
+                kpis: [{t:'站點妥善率', v:'98%'}], 
+                benefit: '提供精確地面觀測數據，支援預報與防災。', 
+                source: '主計室 115 簡表' 
+            },
+            { 
+                id: '科技發展組', icon: 'fa-vial-circle-check', 
+                budget_info: '229,690k (+73,387k)',
+                full_okr: '推動 P7 數位治理計畫，發展 AI 氣象服務與跨領域應用。', 
+                kpis: [{t:'計畫執行率', v:'100%'}], 
+                benefit: '轉化科技研發為實務服務價值。', 
+                source: '主計室 115 簡表' 
+            },
+            { 
+                id: '地震測報中心', icon: 'fa-house-crack', 
+                budget_info: '152,462k (+5,532k)',
+                full_okr: '維運全台地震監測網，精進海纜與預警定位技術。', 
+                kpis: [{t:'預警時效', v:'精進'}, {t:'海纜妥善', v:'維持'}], 
+                benefit: '縮短震後預警秒數，保障國人安全。', 
+                source: '主計室 115 簡表' 
             },
             { 
                 id: '預報中心', icon: 'fa-sun-cloud', 
                 budget_info: '77,189k (-35,039k)',
-                full_okr: '1. 提升地面分析場精度 15%。<br>2. 上線鄉鎮沿海大雷雨即時訊息系統。<br>3. 研發自動化繪圖技術，節省製圖人力 50%。', 
-                kpis: [{t:'預警鄉鎮', v:'368處'}, {t:'繪圖效率', v:'+50%'}], 
-                benefit: '提供公眾精緻之在地化劇烈天氣預警。', 
-                source: '預報中心 / 主計室' 
-            },
-            { 
-                id: '海象氣候', icon: 'fa-droplet', 
-                budget_info: '342,635k (+58,802k)',
-                full_okr: '1. 建立臺灣乾旱整合資訊平臺支援決策。<br>2. 研發 MPAS 海象預報動力模式核心。<br>3. 更新藍色公路預報，提升公里級波浪精測。', 
-                kpis: [{t:'乾旱平台', v:'1套'}, {t:'測網妥善', v:'95%'}], 
-                benefit: '協助政府調適極端旱澇風險，保障海洋經濟。', 
-                source: '海象氣候組 / 主計室' 
-            },
-            { 
-                id: '遙測組', icon: 'fa-tower-observation', 
-                budget_info: '298,806k (+108,404k)',
-                full_okr: '1. 推動馬祖雷達動工、金門雷達細部規劃。<br>2. 維護全台 S-Band 雙偏極化雷達網。<br>3. 產製高解析海流圖提升岸防安全。', 
-                kpis: [{t:'雷達妥善率', v:'95%'}, {t:'工項達成', v:'100%'}], 
-                benefit: '補足西部觀測盲區，強化金馬濃霧預警。', 
-                source: '海氣遙測組 / 主計室' 
-            },
-            { 
-                id: '觀測組', icon: 'fa-wind', 
-                budget_info: '256,014k (+66,085k)',
-                full_okr: '1. 開發 50 航次無人機垂直剖面觀測。<br>2. 建置迷你探空自動化觀測網先行試點。<br>3. 綜觀站妥善率 98% 以上。', 
-                kpis: [{t:'測站妥善', v:'98%'}, {t:'UAV觀測', v:'50次'}], 
-                benefit: '為數值預報提供高品質初始場。', 
-                source: '大氣觀測組 / 主計室' 
-            },
-            { 
-                id: '科發組', icon: 'fa-vial-circle-check', 
-                budget_info: '229,690k (+73,387k)',
-                full_okr: '1. 統籌 P7 計畫產學合作與 AI 驗證。<br>2. 強化太空天氣資料應用與 TASA 合作。<br>3. 辦理 12 場氣象科技技術交流。', 
-                kpis: [{t:'執行率', v:'100%'}, {t:'交流場次', v:'12場'}], 
-                benefit: '整合產學研能量，培育次世代氣象人才。', 
-                source: '科技發展組 / 主計室' 
-            },
-            { 
-                id: '地震中心', icon: 'fa-house-crack', 
-                budget_info: '152,462k (+5,532k)',
-                full_okr: '1. 南部海纜鋪設與陸上站維運。<br>2. 開發機器學習 (AI) 地震定位技術。<br>3. 升級全國 GNSS 觀測站強化監測。', 
-                kpis: [{t:'預警秒數', v:'+10-20s'}, {t:'資料服務', v:'320萬筆'}], 
-                benefit: '縮短地震預警反應時間，降低震災風險。', 
-                source: '地震測報中心 / 主計室' 
+                full_okr: '產製每日預報與劇烈天氣警報，維持 24 小時監控作業。', 
+                kpis: [{t:'預警覆蓋', v:'368鄉鎮'}], 
+                benefit: '即時傳達防災訊息，降低致災損失。', 
+                source: '主計室 115 簡表' 
             },
             { 
                 id: '秘書室', icon: 'fa-file-invoice-dollar', 
                 budget_info: '67,683k (+1,855k)',
-                full_okr: '1. 辦理署本部行政事務與採購流程管理。<br>2. 協助各項公共建設計畫招標與發包。<br>3. 維護署區環境安全與公文處理時效。', 
-                kpis: [{t:'採購合格率', v:'100%'}, {t:'公文時效', v:'98%'}], 
-                benefit: '確保行政流程透明與效率，支援氣象核心業務運作。', 
+                full_okr: '辦理署本部行政事務、採購及資產管理。', 
+                kpis: [{t:'行政時效', v:'98%'}], 
+                benefit: '支撐全署日常運作之行政核心。', 
+                source: '主計室 115 簡表' 
+            },
+            { 
+                id: '南區中心', icon: 'fa-location-dot', 
+                budget_info: '20,302k (+759k)',
+                full_okr: '維持南部氣象站維運，辦理區域性防災宣導。', 
+                kpis: [{t:'宣導場次', v:'目標達成'}], 
+                benefit: '在地化防災服務與設備維運。', 
+                source: '主計室 115 簡表' 
+            },
+            { 
+                id: '綜合規劃組', icon: 'fa-diagram-project', 
+                budget_info: '14,099k (+1,131k)',
+                full_okr: '負責施政計畫編審、研考及法規管理事務。', 
+                kpis: [{t:'計畫管制', v:'100%'}], 
+                benefit: '確保施政計畫如質如期推動。', 
                 source: '主計室 115 簡表' 
             }
         ];
 
-        // --- DATA 3: FULL QA ARCHIVE (Added Personnel Office QA) ---
+        // --- DATA 3: FULL QA ARCHIVE ---
         const fullQA = [
-            { id: 'q_hr1', title: '人事費增列 1,782 萬元說明', issue: '立院觀點：115 年人事費較去年增加，請說明其必要性。', question: '編列 8 億 2,908 萬人事費之成長原因與支用狀況為何？', answer: '主因係考量本署人員「考績晉級」及「114 年軍公教待遇調增」之年度增加支出。114 年執行率預估為 95.2%，受 114 年 36 人退休潮影響，已撙節編列以符 115 年 649 名員額需求。', source: '人事室 PPTX' },
-            { id: 'q_hr2', title: '出國計畫重複性與效益疑慮', issue: '立院觀點：出國進修研究計畫名稱與往年雷同，是否有其必要？', question: '如何證明出國計畫之具體效益？未來是否調整計畫名稱？', answer: '該計畫為與歐美日等先進國家「長期技術交流」，旨在精進地震測報與氣象 AI 技術。未來 116 年將配合組改後業務變動，審慎重新規劃計畫名稱，確保名稱與實際技術產出更趨一致。', source: '人事室 PPTX' },
-            { id: 'q_hr3', title: '大陸地區旅費調增原因', issue: '立院觀點：115 年編列 7.5 萬較 114 年增加 6 萬，是否浮濫？', question: '僅編列單項計畫，預算為何大幅回升？', answer: '114 年原核定 7.5 萬遭立院刪減至 1.5 萬，導致難以執行兩岸氣象交流活動。115 年係恢復原核定規模 7.5 萬，用以參加兩岸氣象、地震及海象技術研討，對掌握對岸氣象技術具必要性。', source: '人事室 PPTX' },
-            { id: 'q1', title: '氣象風險數位治理計畫 (規模質疑)', issue: '立院觀點：新增 22.5 億計畫, 允宜強化科技前瞻布局。', question: '為何需要大規模預算？AI 是否取代物理模式？', answer: '採取 Hybrid 雙軌策略。重點在解決 14 天預報斷層，針對農林光電提供指引。3.25 億用於 AI 開發非純買硬體，旨在建立國家自主研發能力。', source: '預擬答題 PDF' },
-            { id: 'q3', title: '南部海纜計畫 (進度延宕)', issue: '立院觀點：執行多年進度落後且修正頻繁。', question: '115 年經費如何保證成效？', answer: '南部海域地形險惡。已調整採購策略選用強化纜線。115 年進入海底鋪設高峰，完工後可爭取南部 10-20 秒預警時間，具極大減災價值。', source: '預擬答題 PDF' },
-            { id: 'q4', title: '金馬雷達預算翻倍說明', issue: '立院觀點：115 年預算較去年增列近 9 千萬。', question: '預算為何暴增？雷達對災防意義？', answer: '係由規劃期進入「設備採購」與「土建高峰」。支付 4 部雷達契約分期款與馬祖站房費。建置後可監控對流移入盲區，填補觀測缺口。', source: '預擬答題 PDF' }
+            { id: 'q_hr1', title: '人事費增列原因與支用分析', issue: '立院觀點：115 人事費較去年增加 1,782 萬元，請說明必要性。', question: '人事費增編理由為何？114 年執行情形如何？', answer: '1. **增編理由**：主要受人員考績晉級及 114 年軍公教待遇調增（115 年須由機關自行編列）影響。2. **執行分析**：114 年因受退休潮影響（達 36 人），執行數預估為 7 億 7,231 萬，執行率約 95.2%。115 年係覈實編列 649 人之法定薪資待遇。', source: '人事室 PPT' },
+            { id: 'q_hr2', title: '出國計畫內容重複性質疑', issue: '立院觀點：進修研究實習計畫內容、前往國家多與前年度相同，效益為何？', question: '如何回應計畫重複性？未來是否有調整規劃？', answer: '1. **技術必要性**：本署與歐美日等先進國家進行長期技術交流，旨在精進 AI 預報與地震海纜觀測，具持續性效益。2. **未來規劃**：116 年度將配合「組改後業務變動」，依實際需要重新核實規劃出國計畫名稱，避免形式化重疊。', source: '人事室 PPT' },
+            { id: 'q_hr3', title: '大陸地區旅費調增之合理性', issue: '立院觀點：115 大陸旅費較去年增加 6 萬元，增加 4 倍之原因？', question: '預算大幅回升原因？114 年未規劃執行原因？', answer: '1. **恢復核定數**：114 年原經政院核定 7.5 萬，遭立院刪減至 1.5 萬，因數額難以執行計畫故 114 未執行。2. **交流效益**：115 恢復編列 7.5 萬以參加地震與氣象研討會，對掌握對岸防災技術動向具必要性。', source: '人事室 PPT' },
+            { id: 'q1', title: '氣象風險數位治理計畫 (P7 計畫)', issue: '立院觀點：新增高額預算計畫，AI 預報是否具備實效？', question: '3.25 億預算支用於何處？', answer: '本計畫採「Hybrid 雙軌策略」，結合動力模式與 AI。重點在於開發 14 天內之無縫隙預報，轉化氣象數據為產業產出價值，非僅採購硬體，而是建立自主研發韌性。', source: '預擬答題 PDF' },
+            { id: 'q2', title: '金馬雷達站房預算翻倍說明', issue: '立院觀點：115 遙測組預算較去年增列 1.08 億，是否過多？', question: '預算增長原因？對離島災防之意義？', answer: '係因計畫進入「設備採購」與「土建高峰」。支付 4 部雷達契約分期款及馬祖站房監造費。完工後可填補西部監測盲區，有效提升金馬劇烈天氣警報時效。', source: '預擬答題 PDF' }
         ];
 
         // --- RENDER FUNCTIONS ---
@@ -270,13 +274,11 @@
         function renderMajorProjects() {
             const container = document.getElementById('major-project-list');
             container.innerHTML = strategicProjects.map(p => `
-                <button onclick="showProjectDetail('${p.id}')" id="proj-btn-${p.id}" class="project-btn w-full text-left p-5 rounded-2xl border border-white/10 flex items-center gap-4 transition-all group">
+                <button onclick="showProjectDetail('${p.id}')" id="proj-btn-${p.id}" class="project-btn w-full text-left p-5 rounded-2xl border border-white/10 flex items-center gap-4 group">
                     <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-sky-400 group-hover:scale-110 transition-transform">
                         <i class="fa-solid ${p.icon} text-lg"></i>
                     </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-slate-300 group-hover:text-white leading-tight">${p.name}</h4>
-                    </div>
+                    <div><h4 class="text-sm font-bold text-slate-300 group-hover:text-white leading-tight">${p.name}</h4></div>
                 </button>
             `).join('');
             showProjectDetail('HPC');
@@ -287,40 +289,32 @@
             const container = document.getElementById('major-project-display');
             document.querySelectorAll('#major-project-list button').forEach(b => b.classList.remove('project-active'));
             document.getElementById(`proj-btn-${id}`).classList.add('project-active');
-
             container.innerHTML = `
                 <div class="fade-in space-y-10 text-left">
                     <div class="flex flex-col md:flex-row justify-between items-start gap-6">
                         <div class="flex-1">
                             <h3 class="text-3xl font-black text-slate-900 leading-tight">${p.name}</h3>
-                            <p class="text-slate-500 mt-2 font-medium">主責單位：${p.owner} | <span class="text-sky-600 font-bold">來源：${p.source}</span></p>
+                            <p class="text-slate-500 mt-2 font-medium">主責單位：${p.owner} | <span class="text-sky-600 font-bold">115年度計畫</span></p>
                         </div>
                         <div class="bg-slate-900 text-white p-6 rounded-3xl text-center shadow-lg min-w-[180px]">
-                            <p class="text-[10px] opacity-40 uppercase mb-1">115年分配經費</p>
+                            <p class="text-[10px] opacity-40 uppercase mb-1">年度分配經費</p>
                             <p class="text-2xl font-black text-sky-400">${p.budget}</p>
-                            <p class="text-xs opacity-60">千元 (TWD)</p>
+                            <p class="text-xs opacity-60">單位：千元</p>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100 shadow-inner">
-                            <h4 class="text-xs font-bold text-slate-400 uppercase mb-4 tracking-widest border-b pb-2">115年核心工項</h4>
+                            <h4 class="text-xs font-bold text-slate-400 uppercase mb-4 tracking-widest border-b pb-2">核心工項內容</h4>
                             <ul class="space-y-3">
                                 ${p.works.map(w => `<li class="flex gap-2 text-sm text-slate-700 font-medium leading-relaxed"><i class="fa-solid fa-check text-sky-500 mt-1"></i>${w}</li>`).join('')}
                             </ul>
                         </div>
                         <div class="bg-marine p-6 rounded-3xl text-white shadow-xl flex flex-col justify-between">
-                            <div>
-                                <h4 class="text-xs font-bold text-sky-200 uppercase mb-3">年度 KPI</h4>
-                                <p class="text-4xl font-black">${p.kpi}</p>
-                            </div>
-                            <div class="mt-6 bg-black/20 p-4 rounded-xl border border-white/10">
-                                <h4 class="text-[10px] font-bold text-sky-200 uppercase mb-1">預期效益</h4>
-                                <p class="text-xs text-sky-50 font-medium leading-relaxed italic">${p.benefit}</p>
-                            </div>
+                            <div><h4 class="text-xs font-bold text-sky-200 uppercase mb-3">預期目標 (KPI)</h4><p class="text-4xl font-black">${p.kpi}</p></div>
+                            <div class="mt-6 bg-black/20 p-4 rounded-xl border border-white/10"><p class="text-xs text-sky-50 leading-relaxed italic">${p.benefit}</p></div>
                         </div>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
 
         function renderUnitTabs() {
@@ -328,8 +322,7 @@
             container.innerHTML = units.map(u => `
                 <button onclick="showUnit('${u.id}')" id="tab-${u.id}" class="flex-shrink-0 px-6 py-4 rounded-t-xl text-sm font-bold transition-all hover:text-sky-600">
                     <i class="fa-solid ${u.icon} mr-2"></i> ${u.id}
-                </button>
-            `).join('');
+                </button>`).join('');
         }
 
         window.showUnit = function(id) {
@@ -337,35 +330,37 @@
             const container = document.getElementById('unit-content-display');
             document.querySelectorAll('#unit-tabs-container button').forEach(b => b.classList.remove('active-tab'));
             document.getElementById(`tab-${id}`).classList.add('active-tab');
+            
+            let extraHTML = '';
+            if (u.details) {
+                extraHTML = `
+                <div class="mt-8 overflow-hidden rounded-2xl border border-slate-200">
+                    <table>
+                        <thead><tr><th>重點明細項目</th><th>說明數據</th></tr></thead>
+                        <tbody>${u.details.map(d => `<tr><td class="font-bold">${d.k}</td><td>${d.v}</td></tr>`).join('')}</tbody>
+                    </table>
+                </div>`;
+            }
 
             container.innerHTML = `
                 <div class="bg-white p-10 rounded-b-3xl rounded-tr-3xl border border-slate-200 shadow-sm grid grid-cols-1 lg:grid-cols-2 gap-10 fade-in text-left">
-                    <div class="space-y-8">
+                    <div class="space-y-6">
                         <div>
-                            <div class="flex items-center gap-3 mb-4">
-                                <span class="px-3 py-1 bg-sky-100 text-sky-700 rounded-lg text-xs font-bold">預算：${u.budget_info}</span>
-                            </div>
-                            <p class="text-slate-900 font-bold text-xl leading-relaxed bg-slate-50 p-8 rounded-3xl border-l-4 border-l-sky-500 shadow-inner">${u.full_okr}</p>
+                            <span class="px-3 py-1 bg-sky-100 text-sky-700 rounded-lg text-xs font-bold">115預算案：${u.budget_info}</span>
+                            <h3 class="text-2xl font-bold mt-4">${u.id}：策略目標與 OKR</h3>
+                            <p class="text-slate-600 font-medium text-lg leading-relaxed mt-4 bg-slate-50 p-6 rounded-2xl border-l-4 border-l-sky-500 shadow-inner">${u.full_okr}</p>
                         </div>
-                        <div class="bg-emerald-50 p-6 rounded-3xl border border-emerald-100">
-                            <h4 class="text-xs font-bold text-emerald-500 uppercase mb-2">預期效益</h4>
-                            <p class="text-slate-700 font-bold italic text-base">「${u.benefit}」</p>
-                        </div>
+                        <div class="bg-emerald-50 p-6 rounded-2xl border border-emerald-100"><p class="text-slate-700 font-bold italic">效益：${u.benefit}</p></div>
                     </div>
                     <div>
                         <h4 class="text-xs font-bold text-slate-400 mb-6 uppercase tracking-widest">量化績效指標 (KPI)</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            ${u.kpis.map(k => `
-                                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm text-center">
-                                    <p class="text-3xl font-black text-sky-600 mb-1">${k.v}</p>
-                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${k.t}</p>
-                                </div>
-                            `).join('')}
+                            ${u.kpis.map(k => `<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center"><p class="text-3xl font-black text-sky-600 mb-1">${k.v}</p><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${k.t}</p></div>`).join('')}
                         </div>
-                        <p class="text-[10px] text-slate-400 mt-10 italic">資料出處：${u.source}</p>
+                        ${extraHTML}
+                        <p class="text-[10px] text-slate-400 mt-6 italic">資料出處：${u.source}</p>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
 
         function renderQAList(data) {
@@ -373,9 +368,8 @@
             container.innerHTML = data.map(qa => `
                 <button onclick="showQA('${qa.id}')" id="qa-btn-${qa.id}" class="w-full text-left p-5 border-b hover:bg-white transition-all group">
                     <h4 class="font-bold text-slate-800 group-hover:text-rose-600 leading-snug">${qa.title}</h4>
-                    <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase">對應：${qa.source}</p>
-                </button>
-            `).join('');
+                    <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase">來源：${qa.source}</p>
+                </button>`).join('');
             showQA('q_hr1');
         }
 
@@ -384,25 +378,21 @@
             const container = document.getElementById('qa-detail-display');
             document.querySelectorAll('#qa-list-container button').forEach(b => b.classList.remove('qa-active'));
             document.getElementById(`qa-btn-${id}`).classList.add('qa-active');
-
             container.innerHTML = `
                 <div class="fade-in space-y-10 text-left">
                     <div>
                         <span class="px-4 py-1.5 bg-rose-100 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase">${qa.source}</span>
                         <h3 class="text-3xl font-black mt-6 text-slate-900 leading-tight">${qa.title}</h3>
-                        <div class="mt-6 bg-slate-50 p-8 rounded-3xl border border-slate-100 italic text-slate-700 font-bold text-base leading-relaxed">「${qa.issue}」</div>
+                        <div class="mt-6 bg-rose-50 p-8 rounded-3xl border border-rose-100 italic text-slate-700 font-bold text-base">「${qa.issue}」</div>
                     </div>
                     <div class="space-y-4">
                         <p class="text-xl font-bold text-slate-800 leading-relaxed italic"><i class="fa-solid fa-microphone-lines text-slate-300 mr-3"></i>${qa.question}</p>
                     </div>
-                    <div class="bg-slate-900 p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden border-t-8 border-sky-500">
-                        <h4 class="text-xl font-bold mb-6 text-sky-400 flex items-center gap-3">
-                            <i class="fa-solid fa-user-shield"></i> 官方答詢要領
-                        </h4>
-                        <p class="text-slate-300 leading-relaxed text-lg font-medium">${qa.answer}</p>
+                    <div class="bg-slate-900 p-10 rounded-[3rem] text-white shadow-2xl border-t-8 border-sky-500">
+                        <h4 class="text-xl font-bold mb-6 text-sky-400 flex items-center gap-3"><i class="fa-solid fa-user-shield"></i> 署方官方答詢重點</h4>
+                        <p class="text-slate-300 leading-relaxed text-lg font-medium whitespace-pre-line">${qa.answer}</p>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
 
         function filterQA() {
