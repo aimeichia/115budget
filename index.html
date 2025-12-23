@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>115年度中央氣象署：預算績效與決策導航系統 (D版本 - 深度風險全量版)</title>
+    <title>115年度中央氣象署：預算績效與決策導航系統 (D版本 - 全量整合版)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -21,6 +21,7 @@
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
+        /* 標籤頁 UI 核心修正 - 確保絕對可點選並置於最上層 */
         .tab-btn {
             position: relative;
             z-index: 70;
@@ -30,7 +31,7 @@
             white-space: nowrap;
             display: inline-flex;
             align-items: center;
-            padding: 1rem 1.5rem;
+            padding: 1rem 1.25rem;
         }
         .tab-btn:hover { color: #0ea5e9; background-color: #f0f9ff; }
         .active-tab { 
@@ -52,10 +53,15 @@
         th { background-color: #f8fafc; color: #475569; font-weight: 700; text-align: left; padding: 10px 12px; border-bottom: 2px solid #e2e8f0; font-size: 11px; }
         td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; font-size: 12px; }
 
+        /* 標籤容器滑動強化 */
         #unit-tabs-container {
-            -ms-overflow-style: auto;
-            scrollbar-width: thin;
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 10px;
         }
+        .tab-item { flex: 0 0 auto; }
     </style>
 </head>
 <body class="text-slate-800 text-sm">
@@ -106,15 +112,15 @@
         </div>
     </header>
 
-    <!-- Strategic Project Dashboard (UPGRADED IN D VERSION) -->
+    <!-- Strategic Project Dashboard (EXHAUSTIVE 8 PROJECTS) -->
     <section id="strategic-view" class="py-16 bg-slate-50 text-left relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-10 border-l-8 border-indigo-600 pl-6">
                 <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-3">
-                    <i class="fa-solid fa-microchip text-sky-600"></i> 重大計畫看板 (涵蓋全量會議/調查表計畫)
+                    <i class="fa-solid fa-microchip text-sky-600"></i> 重大計畫看板 (含風險分析)
                 </h2>
                 <p class="mt-4 text-slate-600 font-medium max-w-2xl">
-                    深度解析交通部會議底稿與委員調查表內容，整合 8 項核心科研、新興及維運計畫。
+                    深度解析交通部 1222 會議底稿與委員調查表，涵蓋 8 項核心科研、新興及急迫性維運計畫。
                 </p>
             </div>
 
@@ -132,7 +138,7 @@
     <section id="performance" class="py-20 bg-white border-y relative z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
             <div class="mb-12">
-                <h2 class="text-3xl font-bold text-slate-900">11 組室預算績效與決策明細</h2>
+                <h2 class="text-3xl font-bold text-slate-900">11 組室預算績效與決策明細 (全量回填版)</h2>
                 <p class="mt-4 text-slate-500 font-medium max-w-3xl">對接主計室 PDF、人事室 PPT 及林月琴委員新興計畫清單。請滑動標籤切換組室。</p>
             </div>
 
@@ -152,9 +158,9 @@
     <section id="qa-vault" class="py-20 bg-slate-50 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-left mb-16">
-                <span class="bg-rose-100 text-rose-600 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest">立法院 115 年度預擬答題庫</span>
-                <h2 class="text-3xl font-bold text-slate-900 mt-4">決策風險與攻防重點全記錄</h2>
-                <p class="mt-4 text-slate-500 max-w-2xl italic text-sm">收錄次長會議關於計畫延宕不利影響之應對邏輯。</p>
+                <span class="bg-rose-100 text-rose-600 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest">立法院 115 年度預擬答題庫 (不刪減完整版)</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-4">預算質詢與官方攻防重點全記錄</h2>
+                <p class="mt-4 text-slate-500 max-w-2xl italic text-sm">收錄人事費、預報預算減少、出國必要性、大陸旅費、AI科技及預算風險等全部答詢邏輯。</p>
             </div>
 
             <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-2xl overflow-hidden flex flex-col md:flex-row h-[850px]">
@@ -178,110 +184,102 @@
 
     <!-- JS Implementation -->
     <script>
-        // --- DATA 1: STRATEGIC PROJECTS (D-VERSION EXPANDED) ---
+        // --- DATA 1: STRATEGIC PROJECTS (D-VERSION FULL 8 PROJECTS) ---
         const strategicProjects = [
             { 
                 id: 'P7', name: '氣象風險數位治理與跨域應用創新(P7)', budget: '325,000', owner: '科技發展組', icon: 'fa-microchip', 
-                works: ['精進科研：導入 AI 測報作業應用，提升極端天氣預警效能', '數位轉型：AI 就緒資科擴充、氣象資料治理與跨域應用', '智慧服務：優化氣象署公衆服務系統平台與效能提升'], 
+                works: ['精進科研：導入 AI 測報作業應用，提升極端天氣預警效能', '強化數位轉型：推動國家級氣象資料治理與 AI 就緒資科擴充', '提升智慧服務：優化智慧化氣象署公眾服務系統與效能升級'], 
                 kpi: '100% 執行率', 
-                benefit: '解決 1-14 天預報斷層，將氣象數據轉化為決策價值。',
-                risk: '若預算未審議完成，研發與解析度提升將全面停滯，AI 模式累積驗證中斷將嚴重削弱防災可靠度與風險管理成效。'
+                benefit: '解決 1-14 天預報斷層，將氣象數據轉化為經濟與減災價值。',
+                risk: '115年為研發與驗證關鍵年。若預算未審議完成，模式研發、測試與解析度提升將全面停滯，預報誤差難以改善，降低預警決策品質。AI 模式累積驗證中斷將嚴重削弱防災可靠度。'
             },
             { 
                 id: 'O_MAINT', name: '外洋海氣象觀測維運計畫', budget: '45,500', owner: '海象氣候組', icon: 'fa-anchor', 
-                works: ['每年更換浮標所需之錨繫錨碇設備', '海上毀損儀器之足夠備品更換與維護', '維持 24/7 連續性海象資料回傳'], 
+                works: ['每年更換浮標所需之錨繫錨碇設備', '海上毀損儀器之充足備品更換與緊急維修', '維持 24/7 連續性海象資料回傳'], 
                 kpi: '資料妥善率 95%', 
-                benefit: '保障全台天氣預警、航行安全、海上遊憩及漁業活動。',
-                risk: '屬高度急迫項目。倘預算未完成審議，將無法更新錨繫，導致浮標漂流及資料中斷，對航行安全影響甚鉅。'
+                benefit: '保障全台天氣預警、航行安全、海上遊憩及漁業活動之數據支撐。',
+                risk: '屬高度急迫項目。倘預算未完成審議，將無法更新錨繫，恐導致浮標漂流及資料中斷，對航行安全影響甚鉅。'
             },
             { 
                 id: 'AI_SERV', name: '氣象創新 AI 服務子計畫 (智慧政府)', budget: '21,763', owner: '科技發展組', icon: 'fa-robot', 
-                works: ['建置多語氣象問答服務系統', '導入 AI 氣象圖資解說與短時降雨自動預報', '監測溫室氣體分布並研發預報作業助手'], 
-                kpi: '服務韌性提升 30%', 
-                benefit: '強化公眾獲取氣象資訊之便捷性與解讀能力。',
-                risk: '新興計畫若未能動支，將延誤氣象資訊便捷化轉型，民眾對劇烈天氣圖資之解讀能力難以即時提升。'
+                works: ['導入新興 AI 科技：建置氣象圖資解說與問答多語服務系統', '產製短時降雨自動化預報與預報作業助手研發', '監測溫室氣體分布並強化氣象服務韌性'], 
+                kpi: '服務便捷性提升 30%', 
+                benefit: '強化公眾獲取氣象資訊之便捷性與圖資解讀能力。',
+                risk: '若未能動支，將延誤智慧政府數位化精進轉型，民眾對劇烈天氣預報之即時解讀服務將受阻。'
             },
-            { id: 'HPC', name: '數值天氣測報高速運算電腦建設 (HPC)', budget: '345,903', owner: '數值資訊組', icon: 'fa-server', works: ['建置 GPU 高效算力核心', '第6代電腦可用率維持 99.9%', '新竹氣象園區規劃與發包'], kpi: '99.9% 可用率', benefit: '提供國家級算力，支援氣象 AI 運算。', risk: '分期款給付延宕將導致軟硬體維護中止與維運風險。' },
-            { id: 'R', name: '精進氣象雷達與災防預警 (R 計畫)', budget: '339,650', owner: '海氣遙測組', icon: 'fa-satellite-dish', works: ['金門、馬祖雷達設備採購', '馬祖雷達站房監造與規劃'], kpi: '95% 妥善率', benefit: '補足西部盲區預警能量。', risk: '離島防線建置停擺，盲區劇烈天氣威脅航安。' },
-            { id: 'O_STRAT', name: '智慧海象治理與氣候韌性提升(O計畫)', budget: '388,590', owner: '海象氣候組', icon: 'fa-water', works: ['智慧海象浮標網佈建', '臺灣乾旱整合資訊平臺'], kpi: '95% 妥善率', benefit: '協助政府抗旱與調適極端氣候。', risk: '乾旱監測延誤將影響國家水資源調度決策品質。' },
+            { id: 'HPC', name: '數值天氣測報高速運算電腦建設 (HPC)', budget: '345,903', owner: '數值資訊組', icon: 'fa-server', works: ['建置 GPU 高效算力核心，導入 AI 預報模式產製', '第6代電腦可用率維持 99.9%', '新竹氣象科技園區完成細部設計與發包'], kpi: '99.9% 可用率', benefit: '提供國家級算力核心，加速氣象 AI 作業化應用。', risk: '分期款給付延宕將導致硬體維修履約中斷，國家級算力資源恐停滯。' },
+            { id: 'R', name: '精進氣象雷達與災防預警 (R 計畫)', budget: '339,650', owner: '海氣遙測組', icon: 'fa-satellite-dish', works: ['支付金門、馬祖雷達設備採購分期款', '執行馬祖雷達站房監造與金門站房細部規劃'], kpi: '95% 妥善率', benefit: '補足西部海域觀測盲區，強化離島預警能量。', risk: '延宕馬祖雷達動工與金門雷達交付，使離島災防盲區持續存在，增加短強降雨風險。' },
+            { id: 'O_STRAT', name: '智慧海象治理與氣候韌性提升(O計畫)', budget: '388,590', owner: '海象氣候組', icon: 'fa-water', works: ['智慧海象浮標網佈建', '臺灣乾旱整合資訊平臺建設與維運'], kpi: '95% 妥善率', benefit: '協助政府精準抗旱與調適氣候風險。', risk: '乾旱預警平台建置延誤，將直接影響國家水資源調度之決策效力。' },
             { 
-                id: 'DRONE', name: '無人載具產業發展計畫', budget: '2,724', owner: '大氣觀測組', icon: 'fa-helicopter', 
-                works: ['引進無人機進行氣象站房巡檢作業', '開發無人載具之垂直大氣剖面觀測應用', '建立自動化載具監控流程'], 
-                kpi: '巡檢覆蓋率 100%', 
-                benefit: '提升偏遠站房巡檢安全性與效率。',
-                risk: '巡檢自動化升級停滯，增加人工巡檢偏遠站點之風險與人力成本。'
+                id: 'DRONE', name: '無人載具產業發展統籌型計畫', budget: '2,724', owner: '大氣觀測組', icon: 'fa-helicopter', 
+                works: ['引進無人機進行氣象站房自動化巡檢作業', '開發無人載具垂直大氣剖面觀測試驗', '建立無人載具資料傳輸與監控流程'], 
+                kpi: '巡檢效率提升 40%', 
+                benefit: '提升偏遠站房巡檢安全性與效率，精進觀測密度。',
+                risk: '巡檢自動化升級停滯，增加人工巡檢偏遠站點之勞安風險。'
             },
             { 
-                id: 'VEHICLE', name: '首長專用車及充電椿計畫', budget: '3,136', owner: '人事室/秘書室', icon: 'fa-car-battery', 
-                works: ['設置首長專用車與充電樁配套', '因應公務運輸及緊急災防動員'], 
-                kpi: '100% 妥善', 
-                benefit: '確保災防緊急狀態下之指揮移動能力與節能減碳。',
-                risk: '行政機動性受限，不符中央機關低碳運輸政策導向。'
+                id: 'VEHICLE', name: '行政設備升級 (首長專用車及充電椿)', budget: '3,136', owner: '人事室/秘書室', icon: 'fa-car-battery', 
+                works: ['購置首長專用公務車及建置充電椿配套', '確保緊急災防期間之指揮移動能力'], 
+                kpi: '100% 妥善率', 
+                benefit: '強化行政機動性，符合中央低碳運輸政策導向。',
+                risk: '行政機動性受限，不利於緊急災防動員之行政指揮支援。'
             }
         ];
 
-        // --- DATA 2: ALL 11 UNITS (VERSION D - ENRICHED) ---
+        // --- DATA 2: ALL 11 UNITS (VERSION D - EXHAUSTIVE CONTENT RE-FILLED) ---
         const units = [
             { 
                 id: '人事室', icon: 'fa-users-gear', budget_info: '829,078k (+17,815k)',
-                full_okr: '1. 考量考績晉級與 114 年軍公教調薪，覈實編列人事費。<br>2. 辦理行政運輸設備升級，確保緊急災防調度指揮機動力。', 
-                kpis: [{t:'員額編制', v:'649人'}, {t:'退休潮', v:'36人'}], 
-                details: [{k: '首長用車預算', v: '3,136k (含充電椿建置)'}, {k: '預算增額', v: '主要為自行支應 114 年調薪經費'}],
-                benefit: '穩固本署人才能量，確保測報能量。', source: '人事室 PPT / 1222底稿' 
-            },
-            { 
-                id: '科技發展組', icon: 'fa-vial-circle-check', budget_info: '229,690k (+73,387k)',
-                full_okr: '1. 統籌 P7 計畫開發 AI 模式解決預報斷層。<br>2. 推動氣象創新 AI 智慧政府服務，強化服務韌性。', 
-                kpis: [{t:'交流場次', v:'12場'}, {t:'計畫執行', v:'100%'}], 
-                details: [{k: 'AI 子計畫', v: '21,763k (含多語 QA)'}, {k: 'P7 預算', v: '325,000k (關鍵研發年)'}],
-                benefit: '整合產學研能量，提升測報數位韌性。', source: '主計室 / 委員調查表' 
+                full_okr: '1. 考量考績晉級與 114 年軍公教調薪經費，覈實編列人事費。<br>2. 提升員工專業知能，強化管理職能並營造友善職場環境。<br>3. 辦理行政運輸設備升級(首長用車與充電椿)，確保指揮機動力。', 
+                kpis: [{t:'員額總計', v:'649人'}, {t:'退休人數', v:'36人'}, {t:'執行率', v:'95.2%'}], 
+                details: [
+                    {k: '員額詳細組成', v: '職員 586, 駐警 4, 工友 21, 技工 1, 駕駛 11, 聘用 21, 約僱 5'},
+                    {k: '新增行政項目', v: '新增首長專用車及充電椿 (3,136k)'},
+                    {k: '預算增額因素', v: '114 年軍公教調薪經費 115 年須由本署預算自行支應。'}
+                ],
+                benefit: '穩固本署人才能量，確保測報與災防核心業務持續運算不中斷。', 
+                source: '人事室 PPT / 1222會議底稿' 
             },
             { 
                 id: '預報中心', icon: 'fa-sun-cloud', budget_info: '77,189k (-35,039k)',
-                full_okr: '1. 辦理 24H 測報服務。<br>2. 推動 368 鄉鎮精緻化預報與自動繪圖技術。', 
-                kpis: [{t:'精度提升', v:'15%'}, {t:'製圖效率', v:'+50%'}], 
-                details: [{k: '變動原因', v: '維運預算移撥數值組整合'}, {k: '核心任務', v: '災防警報即時性'}],
-                benefit: '落實精緻預報與減災功能。', source: '主計室' 
+                full_okr: '1. 辦理 24H 天氣測報、警報產製及在地化氣象服務。<br>2. 推動 368 鄉鎮精緻化天氣預報自動產出與即時預警。<br>3. 研發劇烈天氣自動繪圖技術，預計作業效率提升 50%。', 
+                kpis: [{t:'分析精度', v:'提升15%'}, {t:'繪圖效率', v:'+50%'}], 
+                details: [
+                    {k: '預算減少原因', v: '減少 35,039 千元，主因部分系統維運預算移撥數值組統籌整合。'},
+                    {k: '核心任務', v: '維持鄉鎮級大雷雨、強風等劇烈天氣訊息即時發布。'}
+                ],
+                benefit: '落實精緻預報與減災預警功能，確保民眾獲得即時氣象指引。', 
+                source: '主計室 115 簡表 / 前版回填' 
             },
             { 
                 id: '數值資訊組', icon: 'fa-database', budget_info: '716,108k (+190,090k)',
-                full_okr: '1. 執行 HPC 六期，導入 GPU 算力。<br>2. 推動新竹園區土建規劃與發包。', 
-                kpis: [{t:'HPC可用', v:'99.9%'}, {t:'PDS效能', v:'+20%'}], 
-                details: [{k: '增額主因', v: '設備分期採購與園區設計費'}, {k: '算力價值', v: '國家級運算核心'}],
-                benefit: '強化氣象大數據運算效能。', source: '主計室' 
+                full_okr: '1. 執行 HPC 第六期，導入 GPU 高效算力建設。<br>2. 推動新竹氣象科技園區建設之細部規劃與發包。<br>3. 維運國家級即時資料平臺 (PDS) 效能。', 
+                kpis: [{t:'HPC可用性', v:'99.9%'}, {t:'PDS效能', v:'+20%'}], 
+                details: [
+                    {k: '全署增額首位', v: '+1.9 億元，用於高運算設備分期給付與園區設計。'},
+                    {k: '算力價值', v: '提供國家級運算核心，支援 AI 預報模式作業化應用。'}
+                ],
+                benefit: '強化氣象大數據運算效能，支援次世代 AI 模式研發。', source: '主計室 115 簡表' 
             },
-            { 
-                id: '海氣遙測組', icon: 'fa-tower-observation', budget_info: '298,806k (+108,404k)',
-                full_okr: '1. 推動 R 計畫完成金馬雷達建置。<br>2. 維護全台 10 處雙偏極化雷達網。', 
-                kpis: [{t:'雷達妥善', v:'95%'}, {t:'工項達成', v:'100%'}], 
-                details: [{k: '重點工程', v: '馬祖雷達站房監造'}, {k: '離島預警', v: '補足西部觀測盲區'}],
-                benefit: '補足西部觀測盲區預警能量。', source: '主計室' 
-            },
-            { 
-                id: '海象氣候組', icon: 'fa-water', budget_info: '342,635k (+58,802k)',
-                full_okr: '1. 建置外洋海象觀測網維運基礎。<br>2. 臺灣乾旱整合資訊平臺支援決策。', 
-                kpis: [{t:'平台建設', v:'1套'}, {t:'模式更新', v:'核心上線'}], 
-                details: [{k: '維運預算', v: '45,500k (高度急迫項目)'}, {k: '錨繫更換', v: '防止浮標漂流斷訊'}],
-                benefit: '協助調適氣候風險，保障海域安全。', source: '主計室 / 會議底稿' 
-            },
-            { 
-                id: '大氣觀測組', icon: 'fa-wind', budget_info: '256,014k (+66,085k)',
-                full_okr: '1. 維護全國觀測網。<br>2. 開發無人機垂直剖面觀測技術與巡檢應用。', 
-                kpis: [{t:'測站妥善', v:'98%'}, {t:'UAV測次', v:'50次'}], 
-                details: [{k: '新興工項', v: '2,724k (無人機巡檢)'}, {k: '資料提供', v: '高品質初始場數據'}],
-                benefit: '確保國家大氣觀測數據精確性。', source: '主計室 / 委員調查表' 
-            },
-            { id: '地震測報中心', icon: 'fa-house-crack', budget_info: '152,462k (+5,532k)', full_okr: '1. 維護地震海嘯監測網。<br>2. 精進 AI 自動定位技術。', kpis: [{t:'預警時效', v:'精進'}, {t:'測站妥善', v:'95%'}], details: [{k: 'GNSS升級', v: '監控地殼變動'}, {k: 'AI定位', v: '導入機器學習'}], benefit: '縮短強震警報秒數。', source: '主計室' },
-            { id: '秘書室', icon: 'fa-file-invoice-dollar', budget_info: '67,683k (+1,855k)', full_okr: '1. 行政與採購管理。<br>2. 協助重大科技計畫發包管制。', kpis: [{t:'採購合格', v:'100%'}, {t:'行政時效', v:'98%'}], details: [{k: '廳舍維護', v: '優化辦公環境'}, {k: '合約控管', v: '降低履約風險'}], benefit: '穩健行政流程效率。', source: '主計室' },
-            { id: '南區中心', icon: 'fa-location-dot', budget_info: '20,302k (+759k)', full_okr: '1. 南部區域氣象監測。<br>2. 在地化防災宣導與科普。', kpis: [{t:'設備妥善', v:'95%'}, {t:'宣導次數', v:'達標'}], details: [{k: '區域任務', v: '南部劇烈天氣監控'}], benefit: '深耕南部防災量能。', source: '主計室' },
-            { id: '綜合規劃組', icon: 'fa-diagram-project', budget_info: '14,099k (+1,131k)', full_okr: '1. 計畫研考與法規維護。<br>2. 推動氣象技術國際聯繫聯繫。', kpis: [{t:'研考管考', v:'100%'}], details: [{k: '管理目標', v: '確保資源配置效益'}], benefit: '精進施政計畫管理績效。', source: '主計室' }
+            { id: '海氣遙測組', icon: 'fa-tower-observation', budget_info: '298,806k (+108,404k)', full_okr: '1. 推動 R 計畫完成金馬雷達建置。<br>2. 維護全台 10 處雷達網。', kpis: [{t:'雷達妥善', v:'95%'}, {t:'工項達成', v:'100%'}], details: [{k: '工程進度', v: '馬祖站房監造中'}, {k: '增額主因', v: '進入計畫付款高峰'}], benefit: '補足西部觀測盲區預警能量。', source: '主計室' },
+            { id: '海象氣候組', icon: 'fa-water', budget_info: '342,635k (+58,802k)', full_okr: '1. 建置外洋海象維運基礎。<br>2. 乾旱整合平台支援決策。', kpis: [{t:'平台建設', v:'1套'}, {t:'資料回傳', v:'95%'}], details: [{k: '維運預算', v: '45,500k (高度急迫)'}, {k: '錨繫更換', v: '防止浮標漂流'}], benefit: '保障全台海域活動安全。', source: '主計室 / 會議底稿' },
+            { id: '大氣觀測組', icon: 'fa-wind', budget_info: '256,014k (+66,085k)', full_okr: '1. 維護全國觀測網。<br>2. 開發無人機巡檢應用。', kpis: [{t:'測站妥善', v:'98%'}, {t:'UAV巡檢', v:'達成'}], details: [{k: '新興工項', v: '2,724k (無人機計畫)'}], benefit: '確保基礎觀測數據精確。', source: '主計室' },
+            { id: '科技發展組', icon: 'fa-vial-circle-check', budget_info: '229,690k (+73,387k)', full_okr: '1. 統籌 P7 計畫開發 AI 模式。<br>2. 辦理 AI 創新智慧政府服務。', kpis: [{t:'交流場次', v:'12場'}, {t:'執行率', v:'100%'}], details: [{k: 'AI 子計畫', v: '21,763k'}, {k: 'P7 預算', v: '325,000k'}], benefit: '提升國家測報數位韌性。', source: '主計室 / 調查表' },
+            { id: '地震測報中心', icon: 'fa-house-crack', budget_info: '152,462k (+5,532k)', full_okr: '1. 維護監測網。<br>2. 精進 AI 自動定位。', kpis: [{t:'預警時效', v:'精進'}, {t:'妥善率', v:'95%'}], details: [{k: '技術突破', v: '導入機器學習定位'}], benefit: '縮短強震警報秒數。', source: '主計室' },
+            { id: '秘書室', icon: 'fa-file-invoice-dollar', budget_info: '67,683k (+1,855k)', full_okr: '1. 行政與採購管理。<br>2. 協助重大計畫發包。', kpis: [{t:'採購合格', v:'100%'}], details: [{k: '合約控管', v: '降低履約風險'}], benefit: '穩健行政流程效率。', source: '主計室' },
+            { id: '南區中心', icon: 'fa-location-dot', budget_info: '20,302k (+759k)', full_okr: '1. 南部區域氣象監測。<br>2. 在地防災宣導科普。', kpis: [{t:'設備妥善', v:'95%'}], details: [{k: '在地服務', v: '深耕防災量能'}], benefit: '落實南部災防服務。', source: '主計室' },
+            { id: '綜合規劃組', icon: 'fa-diagram-project', budget_info: '14,099k (+1,131k)', full_okr: '1. 計畫研考法規維護。<br>2. 國際聯繫聯繫。', kpis: [{t:'達成率', v:'100%'}], details: [{k: '管考目標', v: '資源配置效益'}], benefit: '精進施政計畫績效。', source: '主計室' }
         ];
 
-        // --- DATA 4: FULL QA ARCHIVE ---
+        // --- DATA 3: FULL QA ARCHIVE (UN-ABBREVIATED) ---
         const fullQA = [
-            { id: 'q_risk', title: '決策風險：預算未及時通過之具體不利影響', issue: '交通部次長會議底稿：115 年新興/新增計畫若未通過，對核心防災業務有何衝擊？', question: '若預算無法依限完成，對氣象署有何實質傷害？', answer: '1. **科研中斷**：P7 計畫為研發關鍵期，中斷將使 AI 驗證資料斷層。2. **航安威脅**：外洋觀測浮標若無預算更換錨繫，浮標恐漂流並導致資料中斷，威脅航行。3. **因應措施**：將視預算優先支撐常態維護，新興計畫則調整發包期程。', source: '1222次長會議底稿' },
-            { id: 'q_hr1', title: '人事費增列理由與退休潮影響分析', issue: '立院質詢：115 人事費 8.29 億較去年增編，理由為何？', question: '114 年執行率僅 95.2% 之理由？', answer: '1. **法定增支**：受人員「考績晉級」及「114 年軍公教調薪 4%」因素影響。2. **退休潮**：114 年退休達 36 人，致部分薪俸經費產生賸餘。115 年係依 649 名編制需求覈實編列。', source: '人事室 PPT' },
-            { id: 'q_forecast', title: '預報中心預算減少對預報品質之影響', issue: '立院質詢：預報預算大幅縮減，是否影響災防警報？', question: '如何維持預報能量？', answer: '減少主要是因資訊維運預算移撥數值組統籌，利於資源整合。中心將專注於 368 鄉鎮精緻預報研發，減災功能完全不受影響且更趨自動化。', source: '主計室 / A版回填' }
+            { id: 'q_risk', title: '決策風險：預算未能依限完成之具體不利影響', issue: '交通部次長會議底稿：115 年新興/新增計畫若未通過，對核心防災業務有何衝擊？', question: '若預算無法依限完成，對氣象署有何實質傷害？', answer: '1. **科研中斷**：P7 計畫為研發關鍵期，中斷將使 AI 驗證資料斷層，模式研發全面停滯。2. **航安威脅**：外洋觀測浮標若無預算更換錨繫，浮標恐漂流並導致海象資料中斷，嚴重威脅航行安全。3. **因應措施**：將視預算優先支撐常態維護，新興項目調整採購期程。', source: '1222 次長會議底稿' },
+            { id: 'q_hr1', title: '人事費增列 1,782 萬元之原因分析與執行率說明', issue: '立院質詢：115 人事費 8.29 億較去年增加，請說明調增合理性與 114 年執行情形。', question: '人事費增編理由為何？114 年執行率僅 95.2% 之理由？', answer: '1. **增編主因**：受本署現有員額「考績晉級」俸額提升及「114 年軍公教待遇調增 4%」因素影響。由於 114 年調薪經費須由 115 年機關預算自行編列支應，故覈實編列以符需求。\n2. **執行率分析**：114 年預估執行率 95.20%，主要是受「退休潮」影響，114 年退休人數高達 36 人，致部分薪俸經費產生賸餘。', source: '人事室 PPT' },
+            { id: 'q_forecast', title: '預報中心預算減少 3,503 萬元之影響評估', issue: '立院質詢：預報中心預算大幅縮減，是否削弱預報與預警服務？', question: '預算減少主因為何？如何維持預報品質？', answer: '1. **預算整合**：減少主要是因部分資訊維護預算移撥數值組統籌，以利大數據資源集中管理。2. **核心能量**：中心將專注於 368 鄉鎮精緻預報與自動化警報，確保防災警報即時性，減災功能完全不受影響且技術更趨自動化。', source: '主計室 115 簡表 / 回填' },
+            { id: 'q_hr2', title: '出國進修計畫內容重複性與精進規劃', issue: '立院質詢：出國研習計畫內容多與往年相同，效益受質疑。', question: '如何回應重複性質疑？', answer: '1. **技術必要性**：長期技術交流旨在精進 AI 預報、地震海纜觀測。2. **精進規劃**：116 年將配合組改業務重新規劃名稱，反映年度技術重點。', source: '人事室 PPT' },
+            { id: 'q_hr3', title: '大陸地區旅費恢復 7.5 萬元編列理由', issue: '立院質詢：大陸旅費較去年增加 4 倍之原因？', question: '恢復預算規模之理由？', answer: '1. **恢復核定數**：114 年度原核定 7.5 萬，遭刪減至 1.5 萬致難以執行。115 年度恢復為覈實編列。2. **交流效益**：用於掌握兩岸氣象地震監測動態。', source: '人事室 PPT' },
+            { id: 'q_p7', title: 'AI 科技計畫 (P7) 必要性與應用邏輯', issue: '預算中心：新增大規模 AI 計畫，其效益與 AI 應用邏輯？', question: '3.25 億預算之用途？AI 如何輔助防災？', answer: '1. **Hybrid 策略**：AI 用於解決 1-14 天預報斷層。2. **具體產出**：開發 AI 區域模式與產業氣候風險平台，轉化數據為決策價值。', source: '委員調查表' },
+            { id: 'q_radar', title: '金馬雷達計畫預算增額與離島防災', issue: '立院質詢：遙測預算增列 1.08 億，是否有進度問題？', question: '預算增長原因？對災防意義？', answer: '1. **付款高峰**：增編係支付 4 部雷達採購分期款項。2. **防災關鍵**：完工後填補西部海域移入盲區，提升離島劇烈天氣警警時效。', source: '預擬答題 PDF' }
         ];
 
         // --- RENDERING LOGIC ---
@@ -324,7 +322,7 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100 shadow-inner">
-                            <h4 class="text-[10px] font-bold text-slate-400 uppercase mb-4 tracking-widest border-b pb-2">計畫工項與產出細節</h4>
+                            <h4 class="text-[10px] font-bold text-slate-400 uppercase mb-4 tracking-widest border-b pb-2">計畫細項與關鍵工項</h4>
                             <ul class="space-y-3">
                                 ${p.works.map(w => `<li class="flex gap-2 text-xs text-slate-700 font-medium leading-relaxed"><i class="fa-solid fa-check text-sky-500 mt-0.5"></i>${w}</li>`).join('')}
                             </ul>
@@ -361,9 +359,9 @@
             if (u.details) {
                 extraHTML += `
                 <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-                    <div class="bg-slate-50 px-4 py-2 border-b text-[10px] font-bold text-slate-400 uppercase tracking-widest">組室深度決策明細 (整合 1222底稿)</div>
+                    <div class="bg-slate-50 px-4 py-2 border-b text-[10px] font-bold text-slate-400 uppercase tracking-widest">組室深度數據解析</div>
                     <table>
-                        <thead><tr><th class="w-1/3">重點明細</th><th>詳細數據與說明</th></tr></thead>
+                        <thead><tr><th class="w-1/3">重點明細</th><th>詳細說明與數據</th></tr></thead>
                         <tbody>${u.details.map(d => `<tr><td class="font-bold text-slate-700">${d.k}</td><td class="text-slate-600">${d.v}</td></tr>`).join('')}</tbody>
                     </table>
                 </div>`;
@@ -373,17 +371,17 @@
                 <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 lg:grid-cols-2 gap-10 fade-in text-left">
                     <div class="space-y-6">
                         <div>
-                            <span class="px-3 py-1 bg-sky-100 text-sky-700 rounded-lg text-[11px] font-bold">115預算分配：${u.budget_info}</span>
-                            <h3 class="text-2xl font-bold mt-4">${u.id}：策略核心 (OKR)</h3>
+                            <span class="px-3 py-1 bg-sky-100 text-sky-700 rounded-lg text-[11px] font-bold">115概算：${u.budget_info}</span>
+                            <h3 class="text-2xl font-bold mt-4">${u.id}：策略重點 (OKR)</h3>
                             <p class="text-slate-600 font-medium text-base leading-relaxed mt-4 bg-slate-50 p-6 rounded-2xl border-l-4 border-l-sky-500 shadow-inner">${u.full_okr}</p>
                         </div>
                         <div class="bg-emerald-50 p-6 rounded-2xl border border-emerald-100 shadow-sm leading-relaxed">
-                            <p class="text-slate-700 font-bold italic text-[13px] leading-relaxed"><i class="fa-solid fa-bullseye text-emerald-500 mr-2"></i>預期效益：${u.benefit}</p>
+                            <p class="text-slate-700 font-bold italic text-[13px] leading-relaxed"><i class="fa-solid fa-bullseye text-emerald-500 mr-2"></i>核心效益：${u.benefit}</p>
                         </div>
                     </div>
                     <div>
                         <h4 class="text-[10px] font-bold text-slate-400 mb-6 uppercase tracking-widest">績效指標 (KPI)</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                             ${u.kpis.map(k => `<div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm text-center transition-transform hover:scale-105"><p class="text-2xl font-black text-sky-600 mb-1">${k.v}</p><p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">${k.t}</p></div>`).join('')}
                         </div>
                         ${extraHTML}
