@@ -13,9 +13,10 @@
 
     <style>
         body { font-family: 'Noto Sans TC', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -23,13 +24,14 @@
         /* 標籤頁 UI 核心修正 - 確保絕對可點選並置於最上層 */
         .tab-btn {
             position: relative;
-            z-index: 60;
+            z-index: 70;
             cursor: pointer;
             transition: all 0.2s;
             border-bottom: 3px solid transparent;
             white-space: nowrap;
             display: inline-flex;
             align-items: center;
+            padding: 1rem 1.5rem;
         }
         .tab-btn:hover { color: #0ea5e9; background-color: #f0f9ff; }
         .active-tab { 
@@ -46,16 +48,19 @@
         .project-active { background-color: #0ea5e9 !important; color: white !important; border-left-color: #38bdf8 !important; }
         
         .bg-marine { background: linear-gradient(135deg, #075985 0%, #0c4a6e 100%); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
         
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th { background-color: #f8fafc; color: #475569; font-weight: 700; text-align: left; padding: 10px 12px; border-bottom: 2px solid #e2e8f0; font-size: 11px; }
         td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; font-size: 12px; }
-        
-        /* 確保捲軸可見且不遮擋最後的項目 */
+
+        /* 強化標籤容器滑動性能與可見度 */
         #unit-tabs-container {
             -ms-overflow-style: auto;
             scrollbar-width: thin;
+            scroll-snap-type: x mandatory;
         }
+        .tab-item { scroll-snap-align: start; }
     </style>
 </head>
 <body class="text-slate-800 text-sm">
@@ -119,7 +124,7 @@
             <div class="bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden flex flex-col lg:flex-row min-h-[600px]">
                 <div class="lg:w-1/3 bg-slate-900 text-white p-6 flex flex-col">
                     <div class="mb-6 p-2 font-bold text-slate-400 text-xs uppercase tracking-widest border-b border-slate-800 pb-4 text-center">核心計畫索引</div>
-                    <div class="space-y-3 flex-1 overflow-y-auto custom-scrollbar" id="major-project-list"></div>
+                    <div class="space-y-3 flex-1 overflow-y-auto no-scrollbar" id="major-project-list"></div>
                 </div>
                 <div class="lg:w-2/3 p-10 relative overflow-y-auto custom-scrollbar bg-white" id="major-project-display"></div>
             </div>
@@ -135,13 +140,13 @@
             </div>
 
             <!-- Tab Container - Fixed Clickable Area with Horizontal Scrolling -->
-            <div class="relative bg-slate-100 rounded-xl p-1 mb-8 overflow-hidden shadow-inner">
-                <div class="flex gap-1 overflow-x-auto custom-scrollbar px-2" id="unit-tabs-container" style="padding-bottom: 8px;">
+            <div class="relative bg-slate-100 rounded-2xl p-1 mb-8 overflow-hidden shadow-inner">
+                <div class="flex overflow-x-auto custom-scrollbar px-2 py-1" id="unit-tabs-container">
                     <!-- JS Populated Tabs -->
                 </div>
             </div>
             
-            <div id="unit-content-display" class="fade-in min-h-[400px]">
+            <div id="unit-content-display" class="fade-in min-h-[450px]">
                 <!-- JS Populated Content -->
             </div>
         </div>
@@ -179,10 +184,10 @@
     <script>
         // --- DATA 1: STRATEGIC PROJECTS ---
         const strategicProjects = [
-            { id: 'HPC', name: '數值天氣測報高速運算電腦建設 (六期)', budget: '345,903', owner: '數值資訊組', icon: 'fa-server', works: ['建置 GPU 高效算力核心，導入 AI 預報模型產製', '第6代高速運算電腦可用率維持達 99.9% 以上', '新竹氣象科技園區完成細部設計與土建規劃發包'], kpi: '99.9% 可用率', benefit: '提供國家級算力，加速氣象 AI 作業化應用，強化極端天氣預報精準度與反應時效。' },
+            { id: 'HPC', name: '數值天氣測報高速運算電腦建設 (HPC)', budget: '345,903', owner: '數值資訊組', icon: 'fa-server', works: ['建置 GPU 高效算力核心，導入 AI 預報模型產製', '第6代高速運算電腦可用率維持達 99.9% 以上', '新竹氣象科技園區完成細部設計與土建規劃發包'], kpi: '99.9% 可用率', benefit: '提供國家級算力，加速氣象 AI 作業化應用，強化極端天氣預報精準度與反應時效。' },
             { id: 'R', name: '精進氣象雷達與災防預警 (R 計畫)', budget: '339,650', owner: '海氣遙測組', icon: 'fa-satellite-dish', works: ['金門、馬祖雷達設備採購(分期款項給付)', '執行馬祖雷達站房監造與金門站房細部規劃', '維持全台 10 處雙偏極化雷達網妥善率 95% 以上'], kpi: '95% 妥善率', benefit: '填補西部海域監測盲區，強化離島地區劇烈對流與濃霧早期預警能量。' },
-            { id: 'O', name: '智慧海象治理與氣候韌性提升', budget: '388,590', owner: '海象氣候組', icon: 'fa-water', works: ['建置智慧海象浮標觀測網(導入MPAS模式)', '建立臺灣乾旱整合資訊平臺支援抗旱調度和決策', '更新藍色公路氣象預報，精進公里級波浪與海象測報'], kpi: '95% 妥善率', benefit: '協助政府調適極端旱澇風險，保障全台海域活動與漁業安全。' },
-            { id: 'P7', name: '氣象風險數位治理與跨域應用創新', budget: '325,000', owner: '科技發展組', icon: 'fa-vial-circle-check', works: ['開發數據驅動 AI 預報模式，解決 1-14 天預報斷層', '建構產業氣候風險管理平臺 (提供企業精準氣象指引)', '推動氣象大數據跨域鏈結，強化國家監測數位韌性'], kpi: '100% 執行率', benefit: '將氣象數據轉化為決策價值，協助各界優化氣候風險規避。' }
+            { id: 'O', name: '智慧海象治理與氣候韌性提升(O計畫)', budget: '388,590', owner: '海象氣候組', icon: 'fa-water', works: ['建置智慧海象浮標觀測網(導入MPAS模式)', '建立臺灣乾旱整合資訊平臺支援抗旱調度和決策', '更新藍色公路氣象預報，精進公里級波浪與海象測報'], kpi: '95% 妥善率', benefit: '協助政府調適極端旱澇風險，保障全台海域活動與漁業安全。' },
+            { id: 'P7', name: '氣象風險數位治理與跨域應用創新(P7)', budget: '325,000', owner: '科技發展組', icon: 'fa-vial-circle-check', works: ['開發數據驅動 AI 預報模式，解決 1-14 天預報斷層', '建構產業氣候風險管理平臺 (提供企業精準氣象指引)', '推動氣象大數據跨域鏈結，強化國家監測數位韌性'], kpi: '100% 執行率', benefit: '將氣象數據轉化為決策價值，協助各界優化氣候風險規避。' }
         ];
 
         // --- DATA 2: ALL 11 UNITS (EXHAUSTIVE DATA) ---
@@ -207,7 +212,7 @@
                 full_okr: '1. 辦理 24H 天氣測報、警報產製及在地化氣象服務。<br>2. 推動 368 鄉鎮精緻化天氣預報自動產出與即時預警。<br>3. 研發劇烈天氣自動繪圖技術，預計作業效率提升 50%。', 
                 kpis: [{t:'分析精度', v:'提升15%'}, {t:'繪圖效率', v:'+50%'}], 
                 details: [
-                    {k: '預算變動說明', v: '減少 35,039 千元，主因部分系統維運預算移撥數值組統籌。'},
+                    {k: '預算變動說明', v: '減少 35,039 千元，主因部分資訊維運預算移撥數值組統籌。'},
                     {k: '核心任務', v: '維持鄉鎮級大雷雨、強風等劇烈天氣訊息即時發布系統。'}
                 ],
                 benefit: '提供公眾精準在地預報，落實災防預警減災功能，保障民眾安全。', 
@@ -378,16 +383,19 @@
         function renderUnitTabs() {
             const container = document.getElementById('unit-tabs-container');
             container.innerHTML = units.map(u => `
-                <button onclick="showUnit('${u.id}')" id="tab-${u.id}" class="tab-btn flex-shrink-0 px-6 py-4 rounded-xl text-[13px] font-bold transition-all">
-                    <i class="fa-solid ${u.icon} mr-1.5 opacity-60"></i> ${u.id}
-                </button>`).join('');
+                <div class="tab-item">
+                    <button onclick="showUnit('${u.id}')" id="tab-${u.id}" class="tab-btn text-[13px] font-bold transition-all">
+                        <i class="fa-solid ${u.icon} mr-1.5 opacity-60"></i> ${u.id}
+                    </button>
+                </div>`).join('');
         }
 
         window.showUnit = function(id) {
             const u = units.find(item => item.id === id);
             const container = document.getElementById('unit-content-display');
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
-            document.getElementById(`tab-${id}`).classList.add('active-tab');
+            const activeBtn = document.getElementById(`tab-${id}`);
+            if(activeBtn) activeBtn.classList.add('active-tab');
             
             let extraHTML = '';
             if (u.details) {
@@ -438,7 +446,9 @@
             const qa = fullQA.find(item => item.id === id);
             const container = document.getElementById('qa-detail-display');
             document.querySelectorAll('#qa-list-container button').forEach(b => b.classList.remove('qa-active'));
-            document.getElementById(`qa-btn-${id}`).classList.add('qa-active');
+            const activeBtn = document.getElementById(`qa-btn-${id}`);
+            if(activeBtn) activeBtn.classList.add('qa-active');
+            
             container.innerHTML = `
                 <div class="fade-in space-y-8 text-left">
                     <div>
