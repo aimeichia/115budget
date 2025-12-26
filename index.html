@@ -3,81 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>115年度中央氣象署預算審查 - 深度模擬問答系統</title>
+    <title>115年度中央氣象署預算審查 - 模擬演練系統 (修正版)</title>
     <style>
         :root {
-            --primary-color: #004d99; /* 氣象署深藍 */
-            --accent-color: #e6f2ff;
+            --primary-color: #003366;
+            --secondary-color: #f8f9fa;
+            --accent-color: #0056b3;
             --text-color: #333;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --purple-color: #6f42c1;
             --border-radius: 8px;
-            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --box-shadow: 0 4px 6px rgba(0,0,0,0.08);
         }
 
         body {
             font-family: "Microsoft JhengHei", "Segoe UI", Arial, sans-serif;
-            line-height: 1.6;
+            background-color: #f0f2f5;
             color: var(--text-color);
             margin: 0;
             padding: 0;
-            background-color: #f4f7f6;
+            line-height: 1.6;
         }
 
-        /* Header Section */
         header {
-            background: linear-gradient(135deg, var(--primary-color), #003366);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #004080 100%);
             color: white;
-            padding: 2rem;
+            padding: 2rem 1rem;
             text-align: center;
-            box-shadow: var(--shadow);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        header h1 { margin: 0; font-size: 2rem; }
-        header .subtitle { font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem; }
+        header h1 { margin: 0; font-size: 1.8rem; }
+        header p { margin: 10px 0 0; font-size: 0.9rem; opacity: 0.9; }
 
-        /* Main Layout */
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 2rem auto;
-            padding: 0 1rem;
+            padding: 0 15px;
             display: grid;
-            grid-template-columns: 250px 1fr; /* Sidebar + Content */
-            gap: 2rem;
+            grid-template-columns: 300px 1fr;
+            gap: 25px;
         }
 
-        /* Sidebar Statistics */
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+        /* Sidebar Stats */
+        .sidebar { display: flex; flex-direction: column; gap: 15px; }
 
         .stat-card {
             background: white;
             padding: 1.5rem;
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            border-left: 5px solid var(--primary-color);
+            box-shadow: var(--box-shadow);
+            border-left: 5px solid var(--accent-color);
             transition: transform 0.2s;
         }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-card h3 { margin: 0 0 10px; font-size: 0.95rem; color: #666; font-weight: 600; }
+        .stat-card .number { font-size: 1.8rem; font-weight: 700; color: var(--primary-color); }
+        .stat-card .sub-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+        .stat-card.alert { border-left-color: var(--danger-color); }
+        .stat-card.alert .number { color: var(--danger-color); }
 
-        .stat-card:hover { transform: translateY(-5px); }
-        .stat-card h3 { margin: 0 0 0.5rem 0; font-size: 1rem; color: #666; }
-        .stat-card .value { font-size: 1.8rem; font-weight: bold; color: var(--primary-color); }
-        .stat-card .desc { font-size: 0.8rem; color: #888; margin-top: 5px; }
+        /* Main Content */
+        .main-section { display: flex; flex-direction: column; gap: 20px; }
 
-        /* Main Content Area */
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        /* Filter Controls */
         .controls {
             background: white;
-            padding: 1rem;
+            padding: 1.2rem;
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+            box-shadow: var(--box-shadow);
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
@@ -85,53 +80,64 @@
             justify-content: space-between;
         }
 
-        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
-        
-        button {
+        .filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        button.filter-btn {
             padding: 8px 16px;
-            border: 1px solid var(--primary-color);
-            background: white;
-            color: var(--primary-color);
+            border: 1px solid #e0e0e0;
+            background: #fff;
+            color: #555;
             border-radius: 20px;
             cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
 
-        button:hover, button.active {
-            background: var(--primary-color);
-            color: white;
-        }
+        button.filter-btn:hover { background: #f0f0f0; }
+        button.filter-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+        
+        button.filter-btn[data-cat="hot"] { border-color: var(--danger-color); color: var(--danger-color); }
+        button.filter-btn[data-cat="hot"].active { background: var(--danger-color); color: white; }
 
-        button.btn-danger {
-            border-color: #d9534f;
-            color: #d9534f;
-        }
-        button.btn-danger:hover { background: #d9534f; color: white; }
+        button.filter-btn[data-cat="prediction"] { border-color: var(--purple-color); color: var(--purple-color); }
+        button.filter-btn[data-cat="prediction"].active { background: var(--purple-color); color: white; }
 
-        input[type="text"] {
-            padding: 10px;
+        .search-box input {
+            padding: 8px 15px;
             border: 1px solid #ddd;
             border-radius: 20px;
-            width: 250px;
-            outline: none;
+            width: 220px;
+            font-size: 0.9rem;
+        }
+        
+        .sim-btn {
+            background: linear-gradient(to right, #da4453, #89216b);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        /* QA Accordion */
-        .qa-list { display: flex; flex-direction: column; gap: 1rem; }
+        /* QA Cards */
+        .qa-list { display: flex; flex-direction: column; gap: 15px; }
 
-        .qa-item {
+        .qa-card {
             background: white;
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+            box-shadow: var(--box-shadow);
             overflow: hidden;
-            border-left: 5px solid transparent;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
         }
-
-        .qa-item[data-cat="hot"] { border-left-color: #d9534f; }
-        .qa-item[data-cat="budget"] { border-left-color: #007bff; }
-        .qa-item[data-cat="tech"] { border-left-color: #6f42c1; }
-        .qa-item[data-cat="marine"] { border-left-color: #28a745; }
+        
+        .qa-card[data-category="budget"] { border-left-color: var(--accent-color); }
+        .qa-card[data-category="hot"] { border-left-color: var(--danger-color); }
+        .qa-card[data-category="tech"] { border-left-color: var(--warning-color); }
+        .qa-card[data-category="marine"] { border-left-color: var(--success-color); }
+        .qa-card[data-category="prediction"] { border-left-color: var(--purple-color); }
 
         .qa-header {
             padding: 1.2rem;
@@ -139,58 +145,62 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-weight: bold;
-            font-size: 1.1rem;
             background: white;
-            transition: background 0.3s;
+        }
+        
+        .qa-header:hover { background-color: #fdfdfd; }
+        
+        .qa-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .qa-header:hover { background: #f8f9fa; }
-        .qa-header::after { content: '+'; font-size: 1.5rem; color: #aaa; }
-        .qa-item.active .qa-header::after { content: '-'; }
+        .qa-icon { transition: transform 0.3s; color: #999; }
+        .qa-card.active .qa-icon { transform: rotate(180deg); }
 
         .qa-body {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s ease-out;
-            background: var(--accent-color);
+            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+            background-color: #fafafa;
+            border-top: 1px solid #eee;
         }
 
         .qa-content {
             padding: 1.5rem;
-            border-top: 1px solid #eee;
+            color: #444;
+            font-size: 1rem;
         }
 
-        .qa-content strong { color: #003366; }
-        
-        .tags {
-            margin-bottom: 8px;
+        .source-tag {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            background: #e9ecef;
+            color: #495057;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            border-left: 3px solid #ced4da;
         }
-        
-        .tag {
+
+        .badge {
             font-size: 0.75rem;
-            padding: 3px 8px;
+            padding: 2px 8px;
             border-radius: 4px;
             color: white;
-            display: inline-block;
-            margin-right: 5px;
+            white-space: nowrap;
         }
-        .tag.inc { background: #d9534f; }
-        .tag.dec { background: #28a745; }
-        .tag.new { background: #f0ad4e; }
-        .tag.hot { background: #c0392b; }
+        .bg-red { background-color: var(--danger-color); }
+        .bg-blue { background-color: var(--accent-color); }
+        .bg-green { background-color: var(--success-color); }
+        .bg-purple { background-color: var(--purple-color); }
+        .bg-orange { background-color: #fd7e14; }
 
-        .source-note {
-            margin-top: 15px;
-            font-size: 0.85rem;
-            color: #666;
-            background: rgba(0,0,0,0.05);
-            padding: 8px;
-            border-radius: 4px;
-        }
-
-        /* Simulation Modal */
-        .modal {
+        /* Modal */
+        .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -198,229 +208,220 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(2px);
         }
 
         .modal-content {
             background: white;
-            padding: 2.5rem;
+            padding: 2rem;
             width: 90%;
             max-width: 700px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            text-align: left;
+            border-radius: 12px;
             position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
         }
 
-        .modal-header {
-            border-bottom: 2px solid var(--primary-color);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .close-btn {
+        .close-modal {
             position: absolute;
             top: 15px; right: 20px;
-            font-size: 2rem;
+            font-size: 1.5rem;
             cursor: pointer;
             color: #999;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .container { grid-template-columns: 1fr; }
-            .sidebar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+            .sidebar { display: grid; grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>115年度中央氣象署預算審查模擬</h1>
-    <div class="subtitle">彙整來源：115年預算案報告、計畫執行說明書、立法院模擬問答資料</div>
+    <h1>115年度中央氣象署預算審查模擬系統</h1>
+    <p>資料來源：115年預算案、計畫執行說明書(定稿)、財委會模擬題庫</p>
 </header>
 
 <div class="container">
-    <!-- Sidebar Statistics -->
+    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="stat-card">
-            <h3>預算總額</h3>
-            <div class="value">30.05 億</div>
-            <div class="desc">較114年增加 4.88億 (+19.4%)</div>
+            <h3>歲出預算總額</h3>
+            <div class="number">30.05 億</div>
+            <div class="sub-text">較114年增加 4.88億 (+19.4%)</div>
         </div>
         <div class="stat-card">
             <h3>數值資訊組</h3>
-            <div class="value">+1.9 億</div>
-            <div class="desc">P7、HPC、AI 計畫核心單位</div>
+            <div class="number">+1.90 億</div>
+            <div class="sub-text">+36.1%<br>含HPC、P7、AI計畫</div>
         </div>
         <div class="stat-card">
             <h3>海氣遙測組</h3>
-            <div class="value">+1.08 億</div>
-            <div class="desc">金馬雷達建設高峰期</div>
+            <div class="number">+1.08 億</div>
+            <div class="sub-text">+56.9%<br>金馬雷達工程高峰</div>
         </div>
-        <div class="stat-card">
-            <h3>AI 創新計畫</h3>
-            <div class="value">2,463 萬</div>
-            <div class="desc">英語語音、溫室氣體監測</div>
+        <div class="stat-card alert">
+            <h3>114年預估保留款</h3>
+            <div class="number">~8.42 億</div>
+            <div class="sub-text">海纜5.5億 + HPC 1.8億<br>(需重點防禦)</div>
         </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="main-content">
-        
+    <main class="main-section">
         <!-- Controls -->
         <div class="controls">
-            <div class="btn-group" id="filterContainer">
-                <button class="active" data-filter="all">全部</button>
-                <button class="btn-danger" data-filter="hot">🔴 委員關切(敏感)</button>
-                <button data-filter="budget">💰 預算總覽</button>
-                <button data-filter="tech">🤖 AI與科技(P7/HPC)</button>
-                <button data-filter="marine">🌊 雷達與海象(R/O)</button>
-                <button data-filter="personnel">👥 人事行政</button>
+            <div class="filter-group">
+                <button class="filter-btn active" data-cat="all">全部顯示</button>
+                <button class="filter-btn" data-cat="hot">🔥 委員關切/敏感</button>
+                <button class="filter-btn" data-cat="budget">💰 預算總覽</button>
+                <button class="filter-btn" data-cat="tech">🤖 P7/HPC/AI計畫</button>
+                <button class="filter-btn" data-cat="marine">🌊 雷達與海象(R/O)</button>
+                <button class="filter-btn" data-cat="prediction">🔮 預測必考(時事)</button>
             </div>
-            <div>
-                <input type="text" id="searchInput" placeholder="搜尋關鍵字：海纜, 出國, 薪資...">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜尋：雲寶, 海纜, 保留款...">
             </div>
-            <button class="btn-danger" onclick="startSimulation()">🎲 隨機抽題模擬</button>
+            <button class="sim-btn" onclick="openSimulation()">🎲 隨機抽題</button>
         </div>
 
-        <!-- QA List -->
-        <div class="qa-list" id="qaList">
-            <!-- Content Injected via JS -->
-        </div>
-
+        <!-- Content Area -->
+        <div id="qaList" class="qa-list"></div>
     </main>
 </div>
 
-<!-- Modal -->
-<div id="simModal" class="modal">
+<!-- Simulation Modal -->
+<div id="simModal" class="modal-overlay">
     <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <div class="modal-header">
-            <h2 id="sim-title">立委質詢模擬</h2>
+        <span class="close-modal" onclick="closeSimulation()">&times;</span>
+        <h2 style="color:var(--primary-color); border-bottom:2px solid #f0f0f0; padding-bottom:15px; margin-top:0;">立委質詢模擬</h2>
+        
+        <div style="margin: 20px 0;">
+            <p style="font-size:0.9rem; color:#666; margin-bottom:5px;">委員提問：</p>
+            <div id="simQuestion" style="font-size:1.3rem; font-weight:700; color:#333;">...</div>
         </div>
-        <div id="sim-body">
-            <p style="font-size: 1.2rem; font-weight: bold; color: var(--primary-color);" id="sim-q">...</p>
-            <hr>
-            <div id="sim-a" style="display:none; background:#f4f7f6; padding:15px; border-radius:5px;">...</div>
+
+        <div id="simAnswerContainer" style="display:none; background:#f9f9f9; padding:20px; border-radius:8px; border-left:4px solid var(--primary-color);">
+            <div id="simAnswer">...</div>
+            <div id="simSource" class="source-tag" style="margin-top:10px;">...</div>
         </div>
-        <div style="margin-top: 20px; text-align: right;">
-            <button onclick="document.getElementById('sim-a').style.display='block'">顯示擬答</button>
-            <button class="btn-danger" onclick="nextSimulation()">下一題</button>
+
+        <div style="margin-top:25px; text-align:right; display:flex; justify-content:flex-end; gap:10px;">
+            <button class="filter-btn" onclick="toggleSimAnswer()">顯示擬答</button>
+            <button class="sim-btn" onclick="nextQuestion()">下一題</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Data Source: Compiled from provided texts (Source [1]-[2])
+    // Data Updated based on 115 Year Budget Plan & Execution Documents
     const qaDatabase = [
         // --- 敏感議題 (Hot Topics) ---
         {
-            id: 1,
             category: "hot",
-            tags: ["hot", "new"],
-            title: "海纜觀測系統(地震)流標 12 次，目前進度與解決方案？",
-            answer: "<strong>現況：</strong>自110年至114年1月，受疫情、物價飆漲及地緣政治(南海情勢)影響，海纜建置案已流廢標 12 次。<br><br><strong>最新對策：</strong><br>1. <strong>計畫修正：</strong>正辦理「第3次計畫修正」，期程延長2年至119年，總經費調整為 28.295 億元。<br>2. <strong>技術變更：</strong>系統架構調整為具擴充功能的「嵌入式(In-line)系統」。<br>3. <strong>廠商意願：</strong>114年1月經洽詢，已有潛在廠商報價並具投標意願，目前修正計畫正報部轉陳行政院核定中。",
-            source: "來源：[1] 模擬題_海纜案過去執行歷程及最新狀況"
+            tags: ["海纜", "流標", "地震", "保留款"],
+            badge: { text: "重點防禦", color: "bg-red" },
+            title: "海纜觀測系統(地震)流標12次，115年預算如何執行？",
+            answer: "<strong>現況：</strong>受疫情與地緣政治影響，至114年1月已流標12次，導致114年預估產生約 5.55 億元之鉅額保留款。<br><br><strong>115年對策：</strong><br>1. <strong>計畫修正：</strong>正辦理「第3次計畫修正」，架構改為「嵌入式(In-line)系統」，總經費調為28.295億元，期程延至119年。<br>2. <strong>預算編列：</strong>115年公務預算僅編列維運費3,270萬元。龐大的建置費將優先執行上述 114年之保留款。<br>3. <strong>進度：</strong>已獲廠商報價，待行政院核定修正計畫後即可重新招標。",
+            source: "來源： [1] 114年已編列未執行經費表 & [2] 模擬題庫-海纜案"
         },
         {
-            id: 2,
             category: "hot",
-            tags: ["hot", "inc"],
-            title: "為何「大陸地區旅費」在兩岸關係緊張下仍增加預算？",
-            answer: "<strong>預算編列：</strong>115年編列 7.5 萬元 (較114年立院刪減後之 1.5 萬元增加 6 萬元)。<br><br><strong>必要性說明：</strong><br>1. <strong>覈實編列：</strong>此金額係回歸行政院原核定數額。<br>2. <strong>不可替代性：</strong>氣象無國界，需藉由參與氣象、地震及海象技術研討會，增進對岸監測技術了解，這對台灣極端天氣預報及地震監測具有不可替代的資訊交流價值。",
-            source: "來源：[3] 立法院模擬問答(三)"
-        },
-        {
-            id: 3,
-            category: "hot",
-            tags: ["hot"],
-            title: "馬祖雷達站房外觀是否會破壞當地景觀？(立委關切)",
-            answer: "<strong>氣象署承諾：</strong><br>針對立法委員關切事項，馬祖觀雨雷達站房的相關建築設計，將融合馬祖地方風情，採用<strong>「閩東建築特色」</strong>進行設計，以確保與當地景觀和諧共存。",
-            source: "來源：[4] R2計畫執行說明書"
-        },
-        {
-            id: 4,
-            category: "personnel",
-            tags: ["inc"],
-            title: "出國預算增加之原因與必要性？",
-            answer: "<strong>預算：</strong>115年編列 153.1 萬元 (+15.7萬元)。<br><strong>原因：</strong>配合行政院日支數額調整。<br><strong>內容：</strong>包含進修研究 (3項) 及開會談判 (5項)。重點在於配合歐美日等先進國家之長期技術交流，這對精進氣象及地震預報技術、因應氣候變遷與強化防災效益有其必要性。",
-            source: "來源：[5][6] 預算案報告 Slide 6 & 9"
+            tags: ["旅費", "兩岸"],
+            badge: { text: "經費質詢", color: "bg-red" },
+            title: "為何「大陸地區旅費」從 1.5 萬增加到 7.5 萬？",
+            answer: "<strong>增加原因：</strong>回歸行政院原核定數額編列。<br><br><strong>說明：</strong><br>1. 114年原編列7.5萬遭立院刪減至1.5萬，致實務交流困難。115年依規定覈實編列。<br>2. 氣象無國界，需藉由研討會增進對岸監測技術了解，對極端天氣預報及地震監測具不可替代之價值。",
+            source: "來源： [3] 立法院模擬問答(三)"
         },
 
         // --- 預算總覽 (Budget) ---
         {
-            id: 5,
             category: "budget",
-            tags: ["inc"],
-            title: "115年度預算總額及主要增減單位？",
-            answer: "<strong>總額：</strong>30億0,495萬元 (較114年 +4.88億，+19.4%)。<br><br><strong>增幅最大前三名：</strong><br>1. <strong>數值資訊組 (+1.9億，+36.1%)：</strong>主因 P7 計畫及 HPC 電腦建置。<br>2. <strong>海氣遙測組 (+1.08億，+56.9%)：</strong>主因金馬雷達建置工程款。<br>3. <strong>科技發展組 (+7,338萬，+47.0%)：</strong>氣象科技研究計畫。<br><br><strong>唯一減少：</strong><br>預報中心 (-3,504萬)，因部分計畫調整。",
-            source: "來源：[7][8] 115年全署經費總表 & 簡報 Slide 2"
+            tags: ["總覽", "預報中心"],
+            badge: { text: "預算減少", color: "bg-red" },
+            title: "預報中心預算為何減少 3,504 萬元？",
+            answer: "<strong>主因：</strong>R計畫中的「無縫隙雨量及智能即時預警服務」分項計畫階段性調整。<br><br><strong>數據分析：</strong><br>該分項115年編列3,681萬元，較114年的7,448萬元大幅減少3,766萬元。雖其他科技研究微幅增加，但總體仍呈減列。此為計畫生命週期的正常波動，不影響核心預報業務。",
+            source: "來源： [4][5] 全署經費總表 & 預算案報告"
+        },
+        {
+            category: "budget",
+            tags: ["總覽", "增加"],
+            badge: { text: "總體分析", color: "bg-blue" },
+            title: "115年預算增加 4.88 億 (+19.4%) 之主要用途？",
+            answer: "增幅主要集中於：<br>1. <strong>數值資訊組 (+1.9億)：</strong>P7計畫及HPC電腦建置。<br>2. <strong>海氣遙測組 (+1.08億)：</strong>金馬雷達建置案付款高峰 (+8,970萬)。<br>3. <strong>海象氣候組 & 科技發展組：</strong>增列 O 計畫及氣象科技研究經費。",
+            source: "來源： [5][6] 115預算案概述"
         },
 
-        // --- AI 與科技 (Tech - P7, HPC, AI) ---
+        // --- 重點計畫 (Tech: AI/P7/HPC) ---
         {
-            id: 6,
             category: "tech",
-            tags: ["new", "inc"],
-            title: "「氣象創新 AI 服務計畫」預算增加 1,716 萬，具體要做什麼？",
-            answer: "本計畫 115年編列 2,463萬元。與前期「氣候領域」重點不同，今年聚焦<strong>AI 應用</strong>：<br>1. <strong>雲寶問天氣：</strong>運用 LLM 建置英語語音諮詢及 Line 服務。<br>2. <strong>溫室氣體監測：</strong>建立衛星智能監測 GHG 初步反演模型。<br>3. <strong>AI-Ready Data：</strong>建立 AI 就緒資料庫，輔助國家氣象資料庫服務。<br>4. <strong>智匯預報：</strong>預報員 AI 賦能計畫，發展模型雛形推薦預報參考資料。",
-            source: "來源：[9][10][11] AI計畫執行說明書"
+            tags: ["AI", "雲寶"],
+            badge: { text: "AI 新興", color: "bg-orange" },
+            title: "「氣象創新 AI 服務計畫」預算 2,463 萬，具體要做什麼？",
+            answer: "本計畫(雲寶計畫)較前期增加1,716萬元，<strong>115年具體工項與金額：</strong><br>1. <strong>雲寶問天氣 (321萬)：</strong>建置英語語音諮詢及 Line 服務。<br>2. <strong>智能天氣生產線 (583萬)：</strong>自動化產製氣象圖資解說。<br>3. <strong>貼心智慧網路專家 (450萬)：</strong>AI 智能網管整合分析。<br>4. <strong>運用 AI 輔助資料庫 (400萬)：</strong>發展智慧監控與諮詢 LLM。<br>5. <strong>智匯預報 (270萬)：</strong>預報員 AI 賦能計畫。",
+            source: "來源： [7][8] 氣象創新AI服務計畫執行說明書"
         },
         {
-            id: 7,
             category: "tech",
-            tags: ["inc"],
-            title: "HPC 高速運算電腦計畫增加近 6,000 萬的用途？",
-            answer: "主要增列項目：<br>1. <strong>資安防護 (2,697萬)：</strong>配合新竹氣象科技園區建置，採購資安硬體。<br>2. <strong>AI 技術發展 (7,150萬)：</strong>發展全球/區域 AI 預報模型 (GraphCast, CorrDiff 等技術) 及系集預報。<br>3. <strong>水電費 (515萬)：</strong>因應 AI 運算及 LLM 訓練需求增加。<br>註：受預算刪減影響，已減列部分機房建置費用 6,167 萬元。",
-            source: "來源：[12][13][14] HPC計畫執行說明書"
+            tags: ["HPC", "電腦"],
+            badge: { text: "算力建設", color: "bg-orange" },
+            title: "HPC 高速運算電腦計畫預算 3.46 億元，錢花在哪裡？",
+            answer: "115年預算增加約5,980萬元，主要用於：<br>1. <strong>AI 技術研發 (7,150萬)：</strong>發展全球/區域 AI 預報模型 (GraphCast, CorrDiff)。<br>2. <strong>新竹園區資安 (2,697萬)：</strong>新機房資安防護硬體。<br>3. <strong>水電費 (515萬)：</strong>因應 AI 運算耗電增加。<br>4. <strong>維護費 (350萬) & 磁帶 (300萬)：</strong>擴充儲存與維運。<br>備註：因預算刪減，已減列機房建置費 6,167 萬元。",
+            source: "來源： [9][10] HPC計畫執行說明書"
         },
         {
-            id: 8,
             category: "tech",
-            tags: ["inc"],
-            title: "P7「氣象風險數位治理計畫」大幅增加 1.8 億元之核心工作？",
-            answer: "P7 為接續前期智慧應用的新一期計畫 (115-120年)。115年預算 3.25 億元。<br><strong>核心亮點：</strong><br>1. <strong>太空天氣作業化：</strong>完成每日2次之數值預測系統。<br>2. <strong>鄉鎮預報 2.0 (3,605萬)：</strong>發展支援鄉鎮尺度決策工具，提供更細緻的預警。<br>3. <strong>無縫隙預報 (2,241萬)：</strong>整合天氣與氣候預報模式。<br>4. <strong>海象提升：</strong>近岸波浪預測解析度提升至 2.5公里。",
-            source: "來源：[15][16][17] P7計畫執行說明書"
+            tags: ["P7", "數位治理"],
+            badge: { text: "旗艦計畫", color: "bg-orange" },
+            title: "P7「氣象風險數位治理計畫」3.25 億元的核心工作？",
+            answer: "P7 為新一期旗艦計畫 (115-120年)。<strong>115年重點：</strong><br>1. <strong>鄉鎮預報 2.0 (3,605萬)：</strong>發展支援鄉鎮預報決策工具。<br>2. <strong>無縫隙預報 (2,241萬)：</strong>整合天氣與氣候模式。<br>3. <strong>太空天氣 (519萬)：</strong>與 TASA 合作建置數值預測系統。<br>4. <strong>AI Ready Data (1,226萬)：</strong>建立 AI 就緒資料服務。",
+            source: "來源： [11][12] P7計畫執行說明書"
         },
 
         // --- 雷達與海象 (Marine/Radar) ---
         {
-            id: 9,
             category: "marine",
-            tags: ["inc"],
-            title: "金馬雷達 (R計畫) 預算暴增 8,970 萬元，錢花在哪？",
-            answer: "增加原因為進入付款高峰期：<br>1. <strong>工程款 (5,915萬)：</strong>支付馬祖、金門雷達站房規劃設計監造，及馬祖觀雨雷達站房工程費。<br>2. <strong>設備款 (3,050萬)：</strong>支付 2部金馬觀霧雷達及 2部觀雨雷達之分期價款。",
-            source: "來源：[4] R2計畫執行說明書"
+            tags: ["雷達", "金馬"],
+            badge: { text: "R計畫", color: "bg-green" },
+            title: "金馬雷達預算暴增 8,970 萬元，進度與外觀爭議？",
+            answer: "<strong>預算用途：</strong>工程付款高峰期。<br>1. <strong>工程款 (5,300萬)：</strong>馬祖雷達站房規劃設計監造及工程款。<br>2. <strong>設備款 (7,000萬)：</strong>2部金馬觀霧雷達及2部觀雨雷達分期款。<br><br><strong>民意回應：</strong>馬祖雷達站房設計將融合<strong>「閩東建築特色」</strong>，確保與當地景觀和諧共存。",
+            source: "來源： [13] R2計畫-建置金門及馬祖雷達說明"
         },
         {
-            id: 10,
             category: "marine",
-            tags: ["inc"],
-            title: "智慧海象 (O計畫) 增加 3,763 萬元，具體建設為何？",
-            answer: "主要增列<strong>公共建設經費</strong>：<br>用於<strong>苗栗離岸海氣象觀測樁</strong>之結構體再利用統包工程 (114年7月決標)、監造及專案管理費用。此為強化離岸海氣象監測之重要基礎建設。",
-            source: "來源：[18] O計畫執行說明書"
-        },
-        {
-            id: 11,
-            category: "marine",
-            tags: ["inc"],
-            title: "海象浮標維運為何增加 3,090 萬元？",
-            answer: "主因是<strong>海嘯預警浮標</strong>的重新布放費用：<br>計畫重新布放臺灣東南、西南 2 站海嘯浮標。115年需支付合約金額的 65% (3,900萬)，較114年支付比例大幅增加，且布放船費亦增加 1,350 萬元。",
-            source: "來源：[19] O計畫-浮標執行說明書"
+            tags: ["海象", "O計畫"],
+            badge: { text: "O計畫", color: "bg-green" },
+            title: "智慧海象 (O計畫) 增加 7,381 萬元，具體建設為何？",
+            answer: "主要增列項目：<br>1. <strong>苗栗離岸觀測樁 (7,640萬)：</strong>結構體再利用統包工程 (114年7月決標)、監造及專案管理。<br>2. <strong>海嘯浮標 (3,150萬)：</strong>重新布放臺灣東南、西南2站，支付比例由35%增至65%。",
+            source: "來源： [14][15] O計畫-精進海域海象監測說明"
         },
 
-        // --- 人事行政 (Personnel) ---
+        // --- 預測必考 (Prediction) ---
         {
-            id: 12,
-            category: "personnel",
-            tags: ["inc"],
-            title: "人事費增加 1,782 萬元之細項分析？",
-            answer: "主要四大因素：<br>1. <strong>考績晉級：</strong>年資增加及考績俸給。<br>2. <strong>待遇調增：</strong>配合114年軍公教待遇調增後之自行支應。<br>3. <strong>退休潮遞補：</strong>114年預估36人退休，需編列預算補足 649 名員額。<br>4. <strong>法定提撥：</strong>公健勞保補助費及提撥金隨待遇調升 (+400萬)。",
-            source: "來源：[20][21] 預算案報告 Slide 4 & 5"
+            category: "prediction",
+            tags: ["太空", "P7"],
+            badge: { text: "必考題", color: "bg-purple" },
+            title: "氣象署為何搞「太空天氣」？預算來源與建設？",
+            answer: "<strong>政策原因：</strong>氣象法修法納入範疇，且為P7計畫重點。<br><strong>115年具體規劃：</strong><br>1. <strong>經費來源：</strong>TASA委託計畫 (968萬) + P7計畫 (519萬)。<br>2. <strong>建設內容：</strong>恆春站建置太陽無線電波觀測系統、大氣暉光觀測系統選址。<br>3. <strong>目標：</strong>建立每日2次太空天氣數值預測，支援衛星通訊定位。",
+            source: "來源： [16] 太空天氣經費需求表 & [11] P7計畫說明"
+        },
+        {
+            category: "prediction",
+            tags: ["保留款", "執行力"],
+            badge: { text: "防禦題", color: "bg-purple" },
+            title: "114年有巨額預算保留 (海纜/HPC)，115年如何改善？",
+            answer: "<strong>保留狀況：</strong><br>1. <strong>海纜計畫 (保留~5.5億)：</strong>因多次流標。對策：改採 In-line 系統並獲報價，115年優先執行保留款，公務預算僅編列維運。<br>2. <strong>HPC 電腦 (保留~1.8億)：</strong>新竹園區案延宕。對策：租用外部算力 (500萬) 及調整建置期程追趕進度。<br>氣象署已建立跨組室協調機制，確保保留款優先執行。",
+            source: "來源： [1] 114年已編列未執行經費表"
         }
     ];
 
-    // --- Logic Functions ---
+    // --- Core Logic ---
 
     const qaList = document.getElementById('qaList');
     const simModal = document.getElementById('simModal');
@@ -430,62 +431,53 @@
         qaList.innerHTML = '';
         let filteredData = qaDatabase;
 
-        // Apply Category Filter
         if (filter !== 'all') {
             filteredData = filteredData.filter(item => item.category === filter);
         }
 
-        // Apply Search Filter
-        if (search) {
+        if (search.trim()) {
             const term = search.toLowerCase();
             filteredData = filteredData.filter(item => 
                 item.title.toLowerCase().includes(term) || 
-                item.answer.toLowerCase().includes(term)
+                item.answer.toLowerCase().includes(term) ||
+                item.tags.some(t => t.toLowerCase().includes(term))
             );
         }
 
         if (filteredData.length === 0) {
-            qaList.innerHTML = '<div style="text-align:center; padding:2rem; color:#888;">查無相關資料</div>';
+            qaList.innerHTML = `<div style="text-align:center; padding:3rem; color:#888;"><p>📭 沒有找到符合條件的問答資料</p></div>`;
             return;
         }
 
         filteredData.forEach(item => {
-            const el = document.createElement('div');
-            el.className = 'qa-item';
-            el.setAttribute('data-cat', item.category);
-            
-            // Build Badges
-            let tagsHtml = '';
-            item.tags.forEach(tag => {
-                let text = '';
-                if(tag==='hot') text = '🔴 敏感';
-                if(tag==='inc') text = '📈 增加';
-                if(tag==='new') text = '✨ 新興';
-                if(tag==='dec') text = '📉 減少';
-                if(text) tagsHtml += `<span class="tag ${tag}">${text}</span>`;
-            });
+            const card = document.createElement('div');
+            card.className = 'qa-card';
+            card.setAttribute('data-category', item.category);
 
-            el.innerHTML = `
-                <div class="qa-header" onclick="toggleQA(this)">
-                    <div>${tagsHtml} ${item.title}</div>
+            card.innerHTML = `
+                <div class="qa-header" onclick="toggleCard(this)">
+                    <div class="qa-title">
+                        <span class="badge ${item.badge.color}">${item.badge.text}</span>
+                        ${item.title}
+                    </div>
+                    <span class="qa-icon">▼</span>
                 </div>
                 <div class="qa-body">
                     <div class="qa-content">
                         ${item.answer}
-                        <div class="source-note">${item.source}</div>
+                        <div class="source-tag">${item.source}</div>
                     </div>
                 </div>
             `;
-            qaList.appendChild(el);
+            qaList.appendChild(card);
         });
     }
 
-    function toggleQA(header) {
-        const item = header.parentElement;
-        const body = item.querySelector('.qa-body');
-        item.classList.toggle('active');
-        
-        if (item.classList.contains('active')) {
+    function toggleCard(header) {
+        const card = header.parentElement;
+        const body = card.querySelector('.qa-body');
+        card.classList.toggle('active');
+        if (card.classList.contains('active')) {
             body.style.maxHeight = body.scrollHeight + "px";
         } else {
             body.style.maxHeight = null;
@@ -493,65 +485,59 @@
     }
 
     // --- Simulation Logic ---
-    let currentSimIndex = -1;
 
-    function startSimulation() {
+    function openSimulation() {
         simModal.style.display = 'flex';
-        nextSimulation();
+        nextQuestion();
     }
 
-    function nextSimulation() {
-        // Randomly pick a question, prioritize HOT topics slightly
-        const rand = Math.random();
-        let pool = qaDatabase;
-        
-        // 30% chance to pick from HOT category explicitly
-        if (rand < 0.3) {
-            const hotItems = qaDatabase.filter(i => i.category === 'hot');
-            if (hotItems.length > 0) pool = hotItems;
-        }
-
-        const item = pool[Math.floor(Math.random() * pool.length)];
-        
-        document.getElementById('sim-q').innerText = "委員提問：" + item.title;
-        document.getElementById('sim-a').innerHTML = `
-            <strong>擬答參考：</strong><br>${item.answer}
-            <br><small style='color:#666; display:block; margin-top:10px;'>${item.source}</small>
-        `;
-        document.getElementById('sim-a').style.display = 'none';
-    }
-
-    function closeModal() {
+    function closeSimulation() {
         simModal.style.display = 'none';
     }
 
-    // --- Event Listeners ---
-    document.getElementById('filterContainer').addEventListener('click', (e) => {
-        if (e.target.tagName === 'BUTTON') {
-            // UI Update
-            document.querySelectorAll('#filterContainer button').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            
-            // Logic Update
-            currentFilter = e.target.getAttribute('data-filter');
-            renderQA(currentFilter, document.getElementById('searchInput').value);
+    function nextQuestion() {
+        document.getElementById('simAnswerContainer').style.display = 'none';
+        
+        // Priority for Hot & Prediction topics
+        let pool = qaDatabase;
+        if (Math.random() < 0.5) {
+            pool = qaDatabase.filter(i => i.category === 'hot' || i.category === 'prediction');
         }
+        
+        const randomItem = pool[Math.floor(Math.random() * pool.length)];
+        
+        document.getElementById('simQuestion').innerText = randomItem.title;
+        document.getElementById('simAnswer').innerHTML = randomItem.answer;
+        document.getElementById('simSource').innerText = randomItem.source;
+    }
+
+    function toggleSimAnswer() {
+        const container = document.getElementById('simAnswerContainer');
+        container.style.display = container.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // --- Event Listeners ---
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            currentFilter = e.target.getAttribute('data-cat');
+            renderQA(currentFilter, document.getElementById('searchInput').value);
+        });
     });
 
     document.getElementById('searchInput').addEventListener('input', (e) => {
         renderQA(currentFilter, e.target.value);
     });
 
-    // Close modal on outside click
     window.onclick = function(event) {
         if (event.target == simModal) {
-            closeModal();
+            closeSimulation();
         }
     }
 
-    // Initial Render
     renderQA();
-
 </script>
 
 </body>
