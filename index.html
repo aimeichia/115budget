@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>115年度中央氣象署預算審查暨氣象法修法全方位題庫 (深度加強版)</title>
+    <title>115年度中央氣象署預算審查暨氣象法修法全方位題庫 (智慧海象升級版)</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -21,9 +21,9 @@
         body { font-family: "Microsoft JhengHei", "Segoe UI", Arial, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: #333; line-height: 1.8; }
         
         /* Header */
-        header { background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); color: white; padding: 3rem 2rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        header h1 { margin: 0; font-size: 2.2rem; font-weight: 800; text-shadow: 1px 1px 4px rgba(0,0,0,0.3); margin-bottom: 10px; }
-        header p { font-size: 1.1rem; opacity: 0.95; max-width: 900px; margin: 0 auto; font-weight: 500; }
+        header { background: linear-gradient(135deg, #00416A, #E4E5E6); color: #2c3e50; padding: 3rem 2rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        header h1 { margin: 0; font-size: 2.2rem; font-weight: 800; text-shadow: 1px 1px 2px rgba(255,255,255,0.8); margin-bottom: 10px; }
+        header p { font-size: 1.1rem; opacity: 0.95; max-width: 900px; margin: 0 auto; font-weight: 600; }
 
         /* Layout */
         .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 280px 1fr; gap: 30px; }
@@ -104,7 +104,7 @@
 
 <header>
     <h1>115年度中央氣象署預算審查暨氣象法修法全方位題庫</h1>
-    <p>整合 115 年度預算案、P7 新興計畫、2026 年展望，並收錄 AI 預報、海纜建置及氣象法修正等資訊。</p>
+    <p>整合 115 年度預算案、P7 新興計畫、智慧海象期末成果，並完整收錄 AI 預報、裂流預警、海嘯浮標維運及氣象法修正等深度解析。</p>
 </header>
 
 <div class="container">
@@ -113,7 +113,7 @@
         <button class="filter-btn" data-cat="hot" onclick="filter('hot', this)">🔥 重點/敏感 (Hot)</button>
         <button class="filter-btn" data-cat="budget" onclick="filter('budget', this)">💰 預算總覽 (Budget)</button>
         <button class="filter-btn" data-cat="quake" onclick="filter('quake', this)">📉 海纜與地震 (Quake)</button>
-        <button class="filter-btn" data-cat="marine" onclick="filter('marine', this)">🌊 預報/雷達/海象 (Marine)</button>
+        <button class="filter-btn" data-cat="marine" onclick="filter('marine', this)">🌊 智慧海象與觀測 (Marine)</button>
         <button class="filter-btn" data-cat="tech" onclick="filter('tech', this)">🤖 科技/AI/HPC (Tech)</button>
         <button class="filter-btn" data-cat="admin" onclick="filter('admin', this)">🏢 行政/人事 (Admin)</button>
         <button class="filter-btn" data-cat="legal" onclick="filter('legal', this)">⚖️ 氣象法修法 (Legal)</button>
@@ -124,7 +124,7 @@
 
     <main>
         <div class="search-container">
-            <input type="text" id="search" class="search-bar" placeholder="🔍 搜尋關鍵字：如 氣候變遷, AI, 預算, 海纜, 地震, 氣象法..." oninput="doSearch()">
+            <input type="text" id="search" class="search-bar" placeholder="🔍 搜尋關鍵字：如 海嘯浮標, 裂流, AI, 預算, 海纜, 地震..." oninput="doSearch()">
         </div>
         <div id="qa-container" class="qa-list">
             <!-- QA Cards will be injected here -->
@@ -345,7 +345,38 @@
             source: "來源：115年全署經費總表、115年經費與工項規劃_人事室"
         },
 
-        // --- 🌊 4. 預報/雷達/海象 (Marine) ---
+        // --- 🌊 4. 智慧海象與觀測 (Marine) ---
+        {
+            cat: "marine",
+            tag: "海嘯浮標維運",
+            bg: "#2980b9",
+            q: "「海嘯預警浮標」目前的運作狀況為何？有發生位移或故障嗎？115年維運計畫為何？",
+            a: `
+                <p><strong>一、浮標位移事件與原因</strong></p>
+                <p>氣象署的西南海嘯預警浮標近期發生了顯著位移。受 113 年 9 月 23 日樺加沙 (Krathon) 颱風影響，該浮標向西北方位移約 1.2 海浬；隨後在 12 月 7 日，因黑潮入侵、中尺度渦旋及大潮等多重因素加乘影響，再次向西北方位移約 1.2 海浬。這兩次位移導致浮標活動範圍超出海底壓力計 (BPR) 的訊號接收有效距離（水深 1.2 倍），造成資料接收出現斷續現象，影響預警效能。</p>
+                <p><strong>二、115 年維運計畫：送回原廠整備</strong></p>
+                <p>為徹底解決此問題並確保觀測品質，氣象署已調整 115 年的維運計畫。原定於 115 年進行的重新布放作業將順延至 116 年。115 年的重點工作是將海嘯浮標<strong>「送回美國原廠進行全面整備」</strong>，所需經費約 1,800 萬元（部分由 115 年設備費支應，部分規劃提前執行）。同時，原編列的 1,350 萬元布放船費建議保留至 116 年執行。此舉旨在確保浮標系統在未來重新布放後能長期穩定運作，發揮海嘯預警的關鍵角色。</p>
+            `,
+            source: "來源：114年期末工作小組_智慧海象_20260107(PPT p.14-16, 23)"
+        },
+        {
+            cat: "marine",
+            tag: "裂流與異常波浪",
+            bg: "#2980b9",
+            q: "氣象署如何利用 AI 與雷達技術精進沿海遊憩安全（裂流與異常波浪）？",
+            a: `
+                <p><strong>一、跨組合作與技術整合</strong></p>
+                <p>為提升沿海遊憩安全，氣象署海氣遙測組與海象氣候組已達成深度合作共識。雙方將整合「岸基 X 波段雷達」與「光學攝影機」的觀測優勢。遙測組負責雷達硬體建置與演算法開發，海象組則負責應用推廣與資料比對。初期示範場域已選定宜蘭外澳、新北白沙灣及瑞芳蝙蝠洞等熱門遊憩區。</p>
+                <p><strong>二、AI 辨識與具體應用成果</strong></p>
+                <p>在技術應用上，氣象署利用 AI 深度學習技術（如 YOLO 模型、隨機森林等）開發了多項預警系統：
+                <ul>
+                    <li><strong>裂流（離岸流）監測：</strong>利用 X 波段雷達回波的時間平均能量差異，開發自動辨識演算法，並結合光學影像進行驗證，能即時偵測危險海流。</li>
+                    <li><strong>異常波浪（瘋狗浪）預警：</strong>已在新北市瑞芳蝙蝠洞完成異常波浪預警系統開發，並提供給新北市政府參用。同時，規劃與東部國家風景區管理處合作建置第 2 座影像觀測站，並已在全台 5 個站點（基隆碧砂、新北野柳、花蓮石梯坪、桃園永安、雲林箔子寮）建立 AI 異常波浪辨識模型。</li>
+                </ul>
+                這些技術將實質轉化為紅綠燈號或即時警示，提供給地方政府與民眾，有效降低海域遊憩風險。</p>
+            `,
+            source: "來源：114_智慧海象環境災防服務計畫指示事項追蹤辦理情形(114Q2-04, 114Q3-01)、114年期末工作小組_智慧海象(PPT p.11, 23)"
+        },
         {
             cat: "marine",
             tag: "氣候變遷",
@@ -367,6 +398,19 @@
                 </ul></p>
             `,
             source: "來源：海象氣候組115年經費與工項規劃、115年預算總說明、115年重要工作、2025年業務成果回顧"
+        },
+        {
+            cat: "marine",
+            tag: "離岸觀測樁",
+            bg: "#2980b9",
+            q: "O計畫中「苗栗離岸海氣象觀測樁」預算大幅增加，具體工程內容與進度為何？",
+            a: `
+                <p><strong>一、結構體再利用工程：鐵塔拆除與拋石整平</strong></p>
+                <p>115 年 O 計畫（智慧海象環境災防服務計畫）預算增加的主因之一是「苗栗離岸海氣象觀測樁」的結構體再利用統包工程，編列約 <strong>7,640 萬元</strong>。這項工程的關鍵進度在於 114 年已進行「拋石整平」作業，並規劃於 115 年進行既有鐵塔的拆除、樁體修補、陽極塊更換及相關補強作業。同時，觀塘港區的海氣象觀測平台土建工程已於 114 年完成，115 年將重點進行觀測儀器的安裝測試及資料上線作業。</p>
+                <p><strong>二、解決海峽觀測盲區</strong></p>
+                <p>臺灣海峽海況惡劣，長期缺乏穩定的定點觀測資料。透過苗栗觀測樁的整建與觀塘平台的啟用，氣象署將能長期、穩定地獲取海峽中部的風、浪、流及氣象數據。這不僅能提升對通過海峽的鋒面、颱風等天氣系統的監測能力，更能直接支援離岸風電產業的運維調度，以及保障航行於海峽的船舶安全。</p>
+            `,
+            source: "來源：114年期末工作小組_智慧海象_20260107(PPT p.6, 9)、智慧海象環境災防服務計畫-精進海域海象監測說明"
         },
         {
             cat: "marine",
@@ -393,19 +437,6 @@
                 <p>這項合作不僅是資料的介接，更涉及後端的資料處理與即時顯示。透過雷達技術研發成果檢視平臺，氣象署能將這些軍方雷達資訊轉化為具防災價值的產品，提供給水保署等防災單位參考，落實「軍民通用、資源共享」的政策目標。</p>
             `,
             source: "來源：雷達小組114年度階段性工作成果"
-        },
-        {
-            cat: "marine",
-            tag: "離岸觀測樁",
-            bg: "#2980b9",
-            q: "O計畫中「苗栗離岸海氣象觀測樁」預算大幅增加，具體工程內容為何？",
-            a: `
-                <p><strong>一、結構體再利用工程</strong></p>
-                <p>115 年 O 計畫預算增加的主因之一是「苗栗離岸海氣象觀測樁」的工程款，編列約 <strong>7,640 萬元</strong>。這項工程是利用既有的離岸結構體進行再利用與整建，內容包含結構體的安全評估、補強以及氣象觀測儀器的安裝平台建置，將其轉型為海峽中線的重要海氣象觀測據點。</p>
-                <p><strong>二、解決海峽觀測盲區</strong></p>
-                <p>臺灣海峽海況惡劣，長期缺乏穩定的定點觀測資料。透過此觀測樁的建置，氣象署將能長期、穩定地獲取海峽中部的風、浪、流及氣象數據。這不僅能提升對通過海峽的鋒面、颱風等天氣系統的監測能力，更能直接支援離岸風電產業的運維調度，以及保障航行於海峽的船舶安全。</p>
-            `,
-            source: "來源：智慧海象環境災防服務計畫-精進海域海象監測說明"
         },
         {
             cat: "marine",
@@ -501,10 +532,12 @@
             a: `
                 <p><strong>一、硬體架構轉型：CPU 與 GPU 並重</strong></p>
                 <p>氣象署在第六代高速運算電腦建置中，已明確採取 CPU 與 GPU 混合建置策略，目標達到 1:1 的運算資源配比。115 年 HPC 計畫特別增列 <strong>7,150 萬元</strong>研發經費，用於與國內外科研機構合作，這顯示氣象署正從單純依賴傳統數值模式，轉向「物理模式與 AI 模式雙軌並行」的發展路徑。</p>
-                <p><strong>二、具體研發方向</strong></p>
+                <p><strong>二、TIMCOM 海洋模式的 GPU 加速成果</strong></p>
+                <p>除了氣象預報，海洋模式的加速也是重點。根據最新測試結果，TIMCOM 海洋模式導入 GPU 架構後效能顯著提升。在署內 A100 機器上運行比傳統 CPU 架構快 8.73 倍，而在 NVIDIA H100 機器上更達到 <strong>11.59 倍</strong>的加速比。這證明了 GPU 算力對於處理複雜海洋物理運算的巨大潛力，將大幅縮短海象預報的運算時間。</p>
+                <p><strong>三、具體研發方向</strong></p>
                 <p>重點研發項目包括：(1) 導入全球開源 AI 模型（如 GraphCast）並進行在地化調校，用於系集預報與颱風路徑預測；(2) 開發臺灣鄰近區域的高解析度 AI 預報模型，利用 CorrDiff 等技術進行降尺度；(3) 發展區域模式再分析系統，為 AI 模型訓練提供高品質的歷史資料集 (AI-Ready Data)。</p>
             `,
-            source: "來源：HPC計畫執行說明、預算評估報告預擬答題"
+            source: "來源：HPC計畫執行說明、預算評估報告預擬答題、114年期末工作小組_智慧海象(PPT p.20)"
         },
         {
             cat: "tech",
